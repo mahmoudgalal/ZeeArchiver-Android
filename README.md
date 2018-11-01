@@ -12,4 +12,4 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
   - Open the ZeeArchiver project in android studio and start building the app.
 <br/>
 <i>Note that the app adds a small jni layer(<b>libzeearchiver.so</b>) over lib7z.so module to make use of the 7z library in a proper way for android</i>
-**Features**:
+<br/>**Features**:
