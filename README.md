@@ -21,3 +21,4 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
   - <i>Packing / unpacking:</i>7z, XZ, BZIP2, GZIP, TAR, ZIP and WIM .
 - Supports <b>AES-256 encryption</b> in 7z and ZIP formats .
 - A built-in file browser.
+- Arabic Localization .
