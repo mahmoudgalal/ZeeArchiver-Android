@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Zee Archiver</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="newfolderdialogtitle">New Folder</string>
+    <string name="title_activity_file_browser">Browse</string>
+    <string name="title_activity_info">Supported Formats</string>
+    <string name="setpassword">Set Password</string>
+    <string name="title_activity_compress">Create Archive</string>
+    <string name="title_activity_startup">Zee Archiver</string>
+    <string-array name="compression_level_arr">
+        <item>Store</item>
+        <item>Fastest</item>
+        <item></item>
+        <item>Fast</item>
+        <item></item>
+        <item>Normal</item>
+        <item></item>
+        <item>Maximum</item>
+        <item></item>
+        <item>Ultra</item>
+    </string-array>
+    <string name="action_share">Share</string>
+    <string name="about">About</string>
+    <string name="title_activity_extract">Extract</string>
+    <string name="extract_archive">Extract Archive</string>
+    <string name="create_archive">Create Archive</string>
+    <string name="tech_info">Tech Info</string>
+    <string name="copyright">Copyright © 2018 Mahmoud Galal</string>
+    <string name="open_archive"> Open...</string>
+    <string name="extract">Extract</string>
+    <string name="extract_to_hint">Extract to:</string>
+    <string name="open_archive_hint">Archive:</string>
+    <string name="archive_name_hint">Archive Name</string>
+    <string name="browse">Browse</string>
+    <string name="select">Select...</string>
+    <string name="archive_format">Archive format:</string>
+    <string name="compression_level">Compression level:</string>
+    <string name="compression_method">Compression method:</string>
+    <string name="dictionary_size">Dictionary size:</string>
+    <string name="word_size">Word size:</string>
+    <string name="solid_block_size">Solid block size:</string>
+    <string name="password">Password:</string>
+    <string name="encryption_method">Encryption method:</string>
+    <string name="encrypt_file_names">Encrypt file names</string>
+    <string name="memory_usage_for_decompressing">Memory usage for decompressing</string>
+    <string name="memory_usage_for_compressing">Memory usage for compressing</string>
+    <string name="supported_formats">Supported Formats</string>
+    <string name="supported_codecs">Supported Codecs</string>
+    <string name="format_name">Name</string>
+    <string name="format_extensions">Extensions</string>
+    <string name="format_updatable">Updatable</string>
+    <string name="format_keepname">KeepName</string>
+    <string name="format_signature">Signature</string>
+    <string name="codec_name">Name</string>
+    <string name="codec_id">ID</string>
+    <string name="codec_encoder_assigned">Encoder Assigned</string>
+    <string name="codec_lib_index">Lib Index</string>
+    <string name="new_folder">New</string>
+    <string name="folder_up">Up</string>
+    <string name="compression_ratio">Compression Ratio</string>
+    <string name="compressing">Compressing</string>
+    <string name="error">Error</string>
+    <string name="extracting">Extracting</string>
+    <string name="warning">Warning</string>
+    <string name="overright_alarm">File already exists,do you want to overwrite it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_file_selected">No files selected.Please select a file or directory to compress!!</string>
+    <string name="no_path_selected">No path selected.Please select a path to create archive in !</string>
+    <string name="pass_not_ascii">PASSWORD SUPPORT ASCII CODES ONLY</string>
+    <string name="pass_too_long">PASSWORD IS TOO LONG</string>
+    <string name="signature">Signature</string>
+    <string name="file_not_accessible">File is not accessible</string>
+    <string name="about_msg">Zee is an efficient and simple to use Archiver and decompressor.\n
+				it can decompress and compress from\\to all the formats supported by the well known 7zip utility.\n
+				Copyright © 2018\nMahmoud Galal\nfor support contact me:\nmahmoudgalal57@yahoo.com</string>
+    <string name="NO_FILE_CHOSEN_MSG">Click open to choose an Archive to Extract.</string>
+    <string name="NO_EXTR_PATH_SELECTED">Before Extraction, Select a path to Extract the Archive in.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="extract_to">Extract to</string>
+    <string name="files_to_compress">Files to Compress:*</string>
+    <string name="output_directory">Output Directory:*</string>
+    <string name="enter_archive_name">Enter Archive Name:*</string>
+
+</resources>

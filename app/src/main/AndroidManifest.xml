@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aroma.zeearchiver"
+    android:versionCode="1"
+    android:versionName="1.0" android:installLocation="preferExternal">
+
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/zeearchiver"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat" android:largeHeap="true">
+        <activity
+            android:name="com.aroma.zeearchiver.ExtractionActivity"
+            android:label="@string/title_activity_extract" android:configChanges="keyboard|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="*/*" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="application/x-rar-compressed" />
+                <data android:mimeType="application/x-7z-compressed" />
+                <data android:mimeType="application/x-bzip2" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name="com.aroma.zeearchiver.FileBrowserActivity"
+            android:label="@string/title_activity_file_browser"
+             android:configChanges="keyboard|orientation" android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.aroma.zeearchiver.InfoActivity"
+            android:label="@string/title_activity_info" android:configChanges="keyboard|orientation" android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.aroma.zeearchiver.CompressActivity"
+            android:label="@string/title_activity_compress" android:configChanges="keyboard|orientation" android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.aroma.zeearchiver.StartupActivity"
+            android:label="@string/title_activity_startup" android:configChanges="keyboard|orientation" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

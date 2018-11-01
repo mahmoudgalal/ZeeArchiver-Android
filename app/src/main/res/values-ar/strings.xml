@@ -1,0 +1,84 @@
+<resources>
+
+    <string name="about">عن البرنامج</string>
+    <string name="action_share">شير</string>
+    <string name="app_name">زيى</string>
+    <string name="archive_format">صيغة الارشيف:</string>
+    <string name="archive_name_hint">اسم الارشيف</string>
+    <string name="browse">تصفح...</string>
+    <string name="cancel">الغاء</string>
+    <string name="codec_encoder_assigned">الضغط مدعوم</string>
+    <string name="codec_id">الرقم الرمزى</string>
+    <string name="codec_lib_index">رقم المكتبة</string>
+    <string name="codec_name">اسم الكودك</string>
+    <string name="compressing">يتم الضغط</string>
+    <string name="compression_level">مستوى الضغط:</string>
+    <string name="compression_method">طريقة الضغط:</string>
+    <string name="compression_ratio">نسبة الضغط</string>
+    <string name="copyright">جميع الحقوق محفوظة ©  2018 محمود جلال</string>
+    <string name="create_archive">ارشيف جديد</string>
+    <string name="dictionary_size">حجم القاموس:</string>
+    <string name="encrypt_file_names">تشفير اسماء الملفات</string>
+    <string name="encryption_method">طريقة التشفير:</string>
+    <string name="error">خطا</string>
+    <string name="extract">فك</string>
+    <string name="extract_to">Extract to</string>
+    <string name="extract_archive">فك ارشيف</string>
+    <string name="extract_to_hint">:فك فى</string>
+    <string name="extracting">يتم الفك</string>
+    <string name="folder_up">لاعلى</string>
+    <string name="format_extensions">الفورمات</string>
+    <string name="format_keepname">يحفظ الاسم</string>
+    <string name="format_name">اسم الفورمات</string>
+    <string name="format_signature">البصمة</string>
+    <string name="format_updatable">قابل للتعديل</string>
+    <string name="memory_usage_for_compressing">استهلاك الذاكرة للضغط</string>
+    <string name="memory_usage_for_decompressing">استهلاك الذاكرة للفك</string>
+    <string name="new_folder">سجل جديد</string>
+    <string name="newfolderdialogtitle">سجل جديد</string>
+    <string name="no">لا</string>
+    <string name="no_file_selected">&quot;لم يتم اختيار ملف.من فضلك اختر ملف او سجل ليتم الضغط !! &quot;</string>
+    <string name="no_path_selected">لم يتم اختيار مسار.من فضلك اختر مسار ليتم الضغط فيه!</string>
+    <string name="ok">اوكيه</string>
+    <string name="open_archive">افتح ارشيف</string>
+    <string name="open_archive_hint">:الارشيف</string>
+    <string name="overright_alarm">هذا الملف بالفعل موجود .هل تريد الكتابة عليه؟</string>
+    <string name="pass_not_ascii">كلمة السر يجب ان تكون من حروف الاسكي فقط</string>
+    <string name="pass_too_long">كلمة السر طويلة جدا</string>
+    <string name="password">كلمة السر:</string>
+    <string name="select">اختر...</string>
+    <string name="setpassword">حدد كلمة السر</string>
+    <string name="solid_block_size">حجم الكتلة الصلبة:</string>
+    <string name="supported_codecs">الكودكس المدعومة</string>
+    <string name="supported_formats">الفورماتس المدعومة</string>
+    <string name="tech_info">معلومات فنية</string>
+    <string name="title_activity_compress">انشاء ارشيف</string>
+    <string name="title_activity_extract">فك ارشيف</string>
+    <string name="title_activity_file_browser">تصفح</string>
+    <string name="title_activity_info">الفورماتس المدعومة</string>
+    <string name="title_activity_startup">زييي</string>
+    <string-array name="compression_level_arr">
+        <item >تخزين</item>
+        <item >الاسرع</item>
+        <item ></item>
+        <item >سريع</item>
+         <item ></item>
+        <item >عادى</item>
+         <item ></item>
+        <item >الاقصى</item>
+         <item ></item>
+        <item >خارق</item>        
+    </string-array>
+    <string name="warning">تحذير</string>
+    <string name="signature">البصمة</string>
+    <string name="word_size">حجم الكلمة:</string>
+    <string name="yes">نعم</string>
+    <string name="file_not_accessible">لايمكن قراءة هذا الملف</string>
+    <string name="about_msg">زيي هو اداة ضغط وفك ضغط فعالة وسهلة الاستخدام يمكنها الضغط الى او فك الضغط من كل الصيغات المدعومة بواسطة الاداة الشهيرة سفن زيب.كل الحقوق محفوظة  © 2018 محمود جلال .للدعم اتصل بى :
+          mahmoudgalal57@yahoo.com </string>
+	<string name="NO_FILE_CHOSEN_MSG"> اضغط افتح ارشيف  كى تختار ملف يمكن فكه  </string>
+	<string name="NO_EXTR_PATH_SELECTED">قبل الفك اختار مسار يمكن فك الملف فيه</string>
+    <string name="files_to_compress">Files to Compress:</string>
+    <string name="output_directory">Output Directory:</string>
+    <string name="enter_archive_name">Enter Archive Name:</string>
+</resources>

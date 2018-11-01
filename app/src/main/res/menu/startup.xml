@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     tools:context="com.aroma.zeearchiver.StartupActivity">
+    <item android:id="@+id/action_share_item" android:orderInCategory="100" android:title="@string/action_share" 
+        app:showAsAction="ifRoom" android:icon="@drawable/share_icon"></item>
+    <item android:id="@+id/action_about_item" android:orderInCategory="102" android:title="@string/about" 
+        app:showAsAction="ifRoom" android:icon="@drawable/icon_info"></item>
+
+</menu>
