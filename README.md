@@ -24,7 +24,7 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 - Arabic Localization .
 
 <br/><b>How to Extract:</b><br/>
-[![Extract](https://img.youtube.com/vi/J96WcGQQ3uI/maxresdefault.jpg)](https://www.youtube.com/watch?v=J96WcGQQ3uI)
+[![Extract](https://img.youtube.com/vi/J96WcGQQ3uI/hqdefault.jpg)](https://www.youtube.com/watch?v=J96WcGQQ3uI)
 
 
 
