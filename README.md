@@ -1,6 +1,6 @@
 # ZeeArchiver
 ![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/app/src/main/res/drawable-hdpi/zeearchiver.png)      
-Zee is an effient and simple  t use Archiver and decompressor. it can decompress and compress from-to all the formats supported by the well known 7zip utility. <br/>Copyright © 2018 Mahmoud Galal , for support contact me:mahmoudgalal57@yahoo.com
+Zee is an efficient and simple to use Archiver and decompressor. it can decompress and compress from-to all the formats supported by the well known 7zip utility. <br/>Copyright © 2018 Mahmoud Galal , for support contact me:mahmoudgalal57@yahoo.com
 <br/>
 ### How to Build:<br/>
 First ,you have to compile the native part of the project,[P7Zip](http://p7zip.sourceforge.net/),the repo comes with version 9.20.1 source.
