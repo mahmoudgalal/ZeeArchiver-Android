@@ -26,5 +26,9 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 <br/><b>How to Extract:</b><br/>
 [![Extract](https://img.youtube.com/vi/J96WcGQQ3uI/hqdefault.jpg)](https://www.youtube.com/watch?v=J96WcGQQ3uI)
 
+<br/><b>How to Compress:</b><br/>
+[![Compress](https://img.youtube.com/vi/kWQPEnSiC9k/hqdefault.jpg)](https://www.youtube.com/watch?v=kWQPEnSiC9k)
+
+
 
 
