@@ -22,3 +22,9 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 - Supports <b>AES-256 encryption</b> in 7z and ZIP formats .
 - A built-in file browser.
 - Arabic Localization .
+
+<br/><b>How to Extract:</b><br/>
+[![Extract](https://img.youtube.com/vi/J96WcGQQ3uI/maxresdefault.jpg)](https://www.youtube.com/watch?v=J96WcGQQ3uI)
+
+
+
