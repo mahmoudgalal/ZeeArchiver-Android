@@ -11,12 +11,13 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
   appropriate folder under "/Prebuilt/..".
   - Open the ZeeArchiver project in android studio and start building the app.
 <br/>
-<i>Note that the app adds a small jni layer(<b>libzeearchiver.so</b>) over lib7z.so module to make use of the 7z library in a proper way for android</i>
-<br/>
+<i>Note that the app adds a small jni layer(<b>libzeearchiver.so</b>) over lib7z.so module to make use of the 7z library in a proper way for android</i>.
+<br/>   
 ### Features:<br/>
 
 - Supports the following formats:
   - <i>Unpacking only:</i> AR, ARJ, CAB, CHM, CPIO, CramFS, DMG, EXT, FAT, GPT, HFS, IHEX, ISO, LZH, LZMA, MBR, MSI, NSIS, NTFS, QCOW2,     RAR, RPM, SquashFS, UDF, UEFI, VDI, VHD, VMDK, WIM, XAR and Z.
   
   - <i>Packing / unpacking:</i>7z, XZ, BZIP2, GZIP, TAR, ZIP and WIM .
-- Supports <b>AES-256 encryption</b> in 7z and ZIP formats
+- Supports <b>AES-256 encryption</b> in 7z and ZIP formats .
+- A built-in file browser.
