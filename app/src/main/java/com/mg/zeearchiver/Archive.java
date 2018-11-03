@@ -4,7 +4,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver;
+package com.mg.zeearchiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,17 +61,17 @@ public class Archive {
 	 * @param archFullName  archive name including path
 	 * @param itemsPaths  paths of the files to compress
 	 * @param length number of files in the archive
-	 * @param level   @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param dictionary  @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param wordSize    @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param orderMode   @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param solidDefined   @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param SolidBlockSize @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param method     @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param encryptionMethod @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param formatIndex      @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param encryptHeaders   @see {@link com.aroma.zeearchiver.utils.Constants }
-	 * @param encryptHeadersAllowed  @see {@link com.aroma.zeearchiver.utils.Constants }
+	 * @param level   @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param dictionary  @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param wordSize    @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param orderMode   @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param solidDefined   @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param SolidBlockSize @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param method     @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param encryptionMethod @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param formatIndex      @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param encryptHeaders   @see {@link com.mg.zeearchiver.utils.Constants }
+	 * @param encryptHeadersAllowed  @see {@link com.mg.zeearchiver.utils.Constants }
 	 * @param pass password to encrypt and secure the archive
 	 * @param multiThread enable multi-threading
 	 * @param callback a callback to be invocked on multiple events along the compression process(completion ,error ,password....)

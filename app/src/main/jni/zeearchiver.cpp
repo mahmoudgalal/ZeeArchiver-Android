@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-#include "com_aroma_zeearchiver_Archive.h"
+#include "com_mg_zeearchiver_Archive.h"
 #include <android/log.h>
 
 
@@ -494,7 +494,7 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
     return 0;
 }
 
-JNIEXPORT void JNICALL Java_com_aroma_zeearchiver_Archive_print5zInfo
+JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print5zInfo
         (JNIEnv *env, jobject obj) {
     memset(&environment, 0, sizeof(Environment));
     environment.env = env;
@@ -505,7 +505,7 @@ JNIEXPORT void JNICALL Java_com_aroma_zeearchiver_Archive_print5zInfo
     ProcessCommand(2, args, environment);
 }
 
-JNIEXPORT jint JNICALL Java_com_aroma_zeearchiver_Archive_listArchive
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive
         (JNIEnv *env, jobject obj, jstring path) {
     memset(&environment, 0, sizeof(Environment));
     environment.env = env;
@@ -518,7 +518,7 @@ JNIEXPORT jint JNICALL Java_com_aroma_zeearchiver_Archive_listArchive
     return ProcessCommand(3, args, environment);
 }
 
-JNIEXPORT void JNICALL Java_com_aroma_zeearchiver_Archive_loadAllCodecsAndFormats
+JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_loadAllCodecsAndFormats
         (JNIEnv *env, jobject obj) {
 
     /*void addSupportedFormat(int libIndex,String name,boolean UpdateEnabled,
@@ -683,7 +683,7 @@ JNIEXPORT void JNICALL Java_com_aroma_zeearchiver_Archive_loadAllCodecsAndFormat
 
 int InitializeUpdateCallbackIds(JNIEnv *env) {
     int ret = 0;
-    jclass updateCallbackClass = env->FindClass("com/aroma/zeearchiver/UpdateCallback");
+    jclass updateCallbackClass = env->FindClass("com/mg/zeearchiver/UpdateCallback");
     if (updateCallbackClass == NULL) {
         LOGE("Error:couldn't get classid of class: %s", "updateCallbackClass");
         return -1;
@@ -740,9 +740,9 @@ int InitializeUpdateCallbackIds(JNIEnv *env) {
     return ret;
 }
 
-JNIEXPORT void JNICALL Java_com_aroma_zeearchiver_Archive_init
+JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_init
         (JNIEnv *env, jclass cls) {
-    jclass extractCallbackClass = env->FindClass("com/aroma/zeearchiver/ExtractCallback");
+    jclass extractCallbackClass = env->FindClass("com/mg/zeearchiver/ExtractCallback");
     if (extractCallbackClass == NULL) {
         LOGE("Error:couldn't get classid of class: %s", "ExtractCallback");
         return;
@@ -851,7 +851,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 void JNI_OnUnload(JavaVM *, void *) {
 }
 
-JNIEXPORT jint JNICALL Java_com_aroma_zeearchiver_Archive_extractArchive
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_extractArchive
         (JNIEnv *env, jobject, jstring arc, jstring dest, jobject obj) {
     if (jvm) {
         jvm->AttachCurrentThread(&env, NULL);
@@ -883,13 +883,13 @@ JNIEXPORT jint JNICALL Java_com_aroma_zeearchiver_Archive_extractArchive
     // return ret;
 }
 
-JNIEXPORT jlong JNICALL Java_com_aroma_zeearchiver_Archive_getRamSize
+JNIEXPORT jlong JNICALL Java_com_mg_zeearchiver_Archive_getRamSize
         (JNIEnv *, jclass cls) {
     UInt64 physSize = NSystem::GetRamSize();
     return (jlong) physSize;
 }
 
-JNIEXPORT jint JNICALL Java_com_aroma_zeearchiver_Archive_createArchive
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_createArchive
         (JNIEnv *env, jobject obj, jstring archivename, jobjectArray filespaths, jint length,
          jint level, jint dictionary,
          jint wordSize, jboolean orderMode, jboolean solidDefined, jlong solidBlockSize,

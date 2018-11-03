@@ -3,13 +3,13 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver;
+package com.mg.zeearchiver;
 
 import java.util.List;
 
-import com.aroma.zeearchiver.R;
-import com.aroma.zeearchiver.adapters.CodecsInfoAdapter;
-import com.aroma.zeearchiver.adapters.FormatsInfoAdapter;
+import com.mg.zeearchiver.R;
+import com.mg.zeearchiver.adapters.CodecsInfoAdapter;
+import com.mg.zeearchiver.adapters.FormatsInfoAdapter;
 
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;

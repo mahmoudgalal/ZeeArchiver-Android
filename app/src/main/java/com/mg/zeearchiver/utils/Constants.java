@@ -3,9 +3,9 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver.utils;
+package com.mg.zeearchiver.utils;
 
-import com.aroma.zeearchiver.utils.compression.CFormatInfo;
+import com.mg.zeearchiver.utils.compression.CFormatInfo;
 public class Constants {
 
     public static String[] g_Levels = {

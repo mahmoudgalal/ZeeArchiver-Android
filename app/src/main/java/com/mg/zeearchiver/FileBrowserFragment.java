@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver;
+package com.mg.zeearchiver;
 
 
 import android.app.AlertDialog;
@@ -33,8 +33,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aroma.zeearchiver.adapters.FileListAdapter;
-import com.aroma.zeearchiver.utils.FileEntry;
+import com.mg.zeearchiver.adapters.FileListAdapter;
+import com.mg.zeearchiver.utils.FileEntry;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver.adapters;
+package com.mg.zeearchiver.adapters;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aroma.zeearchiver.R;
-import com.aroma.zeearchiver.utils.FileEntry;
+import com.mg.zeearchiver.R;
+import com.mg.zeearchiver.utils.FileEntry;
 
 import java.util.List;
 
-import static com.aroma.zeearchiver.FileBrowserFragment.BROWSE_MODE_SELECT;
+import static com.mg.zeearchiver.FileBrowserFragment.BROWSE_MODE_SELECT;
 
 public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHolder> {
 

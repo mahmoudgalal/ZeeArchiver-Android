@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver;
+package com.mg.zeearchiver;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -31,11 +31,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.app.Activity.RESULT_OK;
-import static com.aroma.zeearchiver.CompressActivity.START_FOLDER_BROWSE;
-import static com.aroma.zeearchiver.CompressActivity.START_SELECT_REQUEST;
-import static com.aroma.zeearchiver.utils.Constants.*;
-import com.aroma.zeearchiver.utils.compression.CFormatInfo;
-import com.aroma.zeearchiver.utils.compression.CInfo;
+import static com.mg.zeearchiver.CompressActivity.START_FOLDER_BROWSE;
+import static com.mg.zeearchiver.CompressActivity.START_SELECT_REQUEST;
+import static com.mg.zeearchiver.utils.Constants.*;
+import com.mg.zeearchiver.utils.compression.CFormatInfo;
+import com.mg.zeearchiver.utils.compression.CInfo;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver.adapters;
+package com.mg.zeearchiver.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aroma.zeearchiver.Archive.*;
-import com.aroma.zeearchiver.R;
+import com.mg.zeearchiver.Archive.*;
+import com.mg.zeearchiver.R;
 
 import java.util.List;
 

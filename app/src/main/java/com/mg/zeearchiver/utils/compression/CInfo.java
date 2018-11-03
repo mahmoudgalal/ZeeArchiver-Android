@@ -3,9 +3,9 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver.utils.compression;
+package com.mg.zeearchiver.utils.compression;
 
-import static com.aroma.zeearchiver.utils.Constants.*;
+import static com.mg.zeearchiver.utils.Constants.*;
 
 import java.util.Vector;
 

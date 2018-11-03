@@ -4,7 +4,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver;
+package com.mg.zeearchiver;
 
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;

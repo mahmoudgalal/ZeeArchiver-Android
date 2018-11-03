@@ -3,7 +3,7 @@
  * Support: mahmoudgalal57@yahoo.com
  */
 
-package com.aroma.zeearchiver.utils;
+package com.mg.zeearchiver.utils;
 
 import java.io.File;
 
