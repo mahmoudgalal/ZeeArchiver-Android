@@ -26,7 +26,8 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 <b>The App is published at Amazon store:</b><br/>
 https://www.amazon.com/dp/B07K5F9DCR/
 <br/>
-[](https://images-na.ssl-images-amazon.com/images/I/71nSz8xHfuL.png)
+![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/device-2018-11-03-145756.png)
+![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/device-2018-11-03-150040.png)
 
 
 <br/><b>How to Extract:</b><br/>
