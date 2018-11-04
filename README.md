@@ -23,6 +23,12 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 - A built-in file browser.
 - Arabic Localization .
 
+<b>The App is published at Amazon store:</b><br/>
+https://www.amazon.com/dp/B07K5F9DCR/
+<br/>
+[](https://images-na.ssl-images-amazon.com/images/I/71nSz8xHfuL.png)
+
+
 <br/><b>How to Extract:</b><br/>
 [![Extract](https://img.youtube.com/vi/J96WcGQQ3uI/hqdefault.jpg)](https://www.youtube.com/watch?v=J96WcGQQ3uI)
 
