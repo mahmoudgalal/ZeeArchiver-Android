@@ -22,13 +22,14 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 - Supports <b>AES-256 encryption</b> in 7z and ZIP formats .
 - A built-in file browser.
 - Arabic Localization .
-<br/>
-![](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)
-<br/>
+
+ ![](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)
+<br/>   
 https://play.google.com/store/apps/details?id=com.mg.zeearchiver
+
 <br/><b>The App is published at Amazon store:</b><br/>
 https://www.amazon.com/dp/B07K5F9DCR/
-<br/>
+<br/>  
 ![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/device-2018-11-03-145756.png)
 ![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/device-2018-11-03-150040.png)
 
