@@ -41,5 +41,5 @@ https://www.amazon.com/dp/B07K5F9DCR/
 [![Compress](https://img.youtube.com/vi/kWQPEnSiC9k/hqdefault.jpg)](https://www.youtube.com/watch?v=kWQPEnSiC9k)
 
 
-
-
+### License:
+[MIT](https://raw.githubusercontent.com/mahmoudgalal/ZeeArchiver/master/LICENSE)
