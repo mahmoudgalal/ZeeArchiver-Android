@@ -100,7 +100,7 @@ fastlane/readme.md
 
 # Built application files
 /*/build/
-
+/*/.cxx/
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
 
