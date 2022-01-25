@@ -419,6 +419,7 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
                 return NExitCode::kFatalError;
             LOGI("Extraction Completed Successfully");
         } else {
+            LOGI("Start processing Listing Command >>>>>");
             UInt64 numErrors = 0;
             HRESULT result = ListArchives(
                     codecs,
@@ -494,6 +495,18 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
     return 0;
 }
 
+JavaVM *jvm;
+
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    JNIEnv *env;
+    if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) return -1;
+    jvm = vm;
+    return JNI_VERSION_1_6;
+}
+
+void JNI_OnUnload(JavaVM *, void *) {
+}
+
 JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print5zInfo
         (JNIEnv *env, jobject obj) {
     memset(&environment, 0, sizeof(Environment));
@@ -506,16 +519,62 @@ JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print5zInfo
 }
 
 JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive
-        (JNIEnv *env, jobject obj, jstring path) {
+        (JNIEnv *env, jobject obj, jstring path, jstring stdoutFilePath) {
+    if (jvm) {
+        jvm->AttachCurrentThread(&env, NULL);
+        LOGI("jvm->AttachCurrentThread...");
+    }
     memset(&environment, 0, sizeof(Environment));
     environment.env = env;
     environment.obj = obj;
-    char outbuf[255];
+    char outbuf[1024];
+    memset(&outbuf[0], 0, sizeof(outbuf));
     int len = env->GetStringLength(path);
     env->GetStringUTFRegion(path, 0, len, outbuf);
-    LOGI("openning Archive: %s \n", outbuf);
+    LOGI("Listing Archive: %s \n", outbuf);
     const char *args[3] = {"7z", "l", outbuf};
-    return ProcessCommand(3, args, environment);
+    if (stdoutFilePath) {
+        char outputFilePathBuff[1024];
+        memset(&outputFilePathBuff[0], 0, sizeof(outputFilePathBuff));
+        len = env->GetStringLength(stdoutFilePath);
+        env->GetStringUTFRegion(stdoutFilePath, 0, len, outputFilePathBuff);
+        LOGI("Listing Archive to file : %s \n", outputFilePathBuff);
+        freopen(outputFilePathBuff, "w", stdout);
+    }
+    int ret = ProcessCommand(3, args, environment);
+    if (stdoutFilePath)
+        fclose(stdout);
+    return ret;
+}
+
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_extractArchive
+        (JNIEnv *env, jobject, jstring arc, jstring dest, jobject obj) {
+    if (jvm) {
+        jvm->AttachCurrentThread(&env, NULL);
+        LOGI("jvm->AttachCurrentThread...");
+    }
+    int ret = 0;
+    memset(&environment, 0, sizeof(Environment));
+    environment.env = env;
+    environment.obj = obj;
+    char arcbuf[1024];
+    memset(&arcbuf[0], 0, sizeof(arcbuf));
+    char destbuf[255];
+    memset(&destbuf[0], 0, sizeof(destbuf));
+    destbuf[0] = '-';
+    destbuf[1] = 'o';
+
+    int len = env->GetStringLength(arc);
+    env->GetStringUTFRegion(arc, 0, len, arcbuf);
+
+    len = env->GetStringLength(dest);
+    env->GetStringUTFRegion(dest, 0, len, destbuf + 2);
+
+    LOGI("Opening Archive: %s \n", arcbuf);
+    LOGI("Extracting to: %s \n", destbuf);
+    const char *args[5] = {"7z", "x", "-y", destbuf, arcbuf};
+    ret = ProcessCommand(5, args, environment);
+    return ret;
 }
 
 JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_loadAllCodecsAndFormats
@@ -839,49 +898,6 @@ JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_init
     InitializeUpdateCallbackIds(env);
 }
 
-JavaVM *jvm;
-
-jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-    JNIEnv *env;
-    if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) return -1;
-    jvm = vm;
-    return JNI_VERSION_1_6;
-}
-
-void JNI_OnUnload(JavaVM *, void *) {
-}
-
-JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_extractArchive
-        (JNIEnv *env, jobject, jstring arc, jstring dest, jobject obj) {
-    if (jvm) {
-        jvm->AttachCurrentThread(&env, NULL);
-        LOGI("jvm->AttachCurrentThread...");
-    }
-
-    int ret = 0;
-    memset(&environment, 0, sizeof(Environment));
-    environment.env = env;
-    environment.obj = obj;
-    char arcbuf[1024];
-    memset(&arcbuf[0], 0, sizeof(arcbuf));
-    char destbuf[255];
-    memset(&destbuf[0], 0, sizeof(destbuf));
-    destbuf[0] = '-';
-    destbuf[1] = 'o';
-    int len = env->GetStringLength(arc);
-    env->GetStringUTFRegion(arc, 0, len, arcbuf);
-
-    len = env->GetStringLength(dest);
-    env->GetStringUTFRegion(dest, 0, len, destbuf + 2);
-
-    LOGI(" Opening Archive: %s \n", arcbuf);
-    LOGI("Extracting to: %s \n", destbuf);
-
-    const char *args[5] = {"7z", "x", "-y", destbuf, arcbuf};
-    ret = ProcessCommand(5, args, environment);
-    return ret;
-    // return ret;
-}
 
 JNIEXPORT jlong JNICALL Java_com_mg_zeearchiver_Archive_getRamSize
         (JNIEnv *, jclass cls) {

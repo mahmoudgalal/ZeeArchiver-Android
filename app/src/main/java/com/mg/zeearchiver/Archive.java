@@ -42,10 +42,11 @@ public class Archive {
 
 	/**
 	 * Lists all (in console stdout) contents of an archive without extraction to disk (not used)
-	 * @param archPath
-	 * @return
+	 * @param archPath archive name including path
+	 * @param outputFileName full path of the fle that is used as Stdout
+	 * @return error code or 0
 	 */
-	public native int listArchive(String archPath);
+	public native int listArchive(String archPath, String outputFileName);
 
 	/**
 	 * Extracts the supplied archive into the given directory

@@ -58,7 +58,7 @@ JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_createArchive
 		  ,jboolean multiThread ,jobject callback);
 
 JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jstring);
 
 #ifdef __cplusplus
 }
