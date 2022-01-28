@@ -5,7 +5,9 @@
 
 #include "Common/Wildcard.h"
 #include "LoadCodecs.h"
+#include "CustomArchiveItem.h"
 
+typedef CObjectVector<CustomArchiveItem> CustomArchiveItemList ;
 HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
     bool stdInMode,
     UStringVector &archivePaths, UStringVector &archivePathsFull,
@@ -14,7 +16,8 @@ HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
     #ifndef _NO_CRYPTO
     bool &passwordEnabled, UString &password,
     #endif
-    UInt64 &errors);
+    UInt64 &errors,
+    CustomArchiveItemList& listData);
 
 #endif
 

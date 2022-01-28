@@ -282,6 +282,20 @@ static void PrintTime(const NCOM::CPropVariant &prop)
   }
 }
 
+static void getTime(const NCOM::CPropVariant &prop, char *buffer) {
+  if (prop.vt != VT_FILETIME)
+    throw "incorrect item";
+  if (IsFileTimeZero(&prop.filetime))
+    buffer[0] = ' ';
+  else {
+    FILETIME localFileTime;
+    if (!FileTimeToLocalFileTime(&prop.filetime, &localFileTime))
+      throw "FileTimeToLocalFileTime error";
+    if (!ConvertFileTimeToString(localFileTime, buffer, true, true))
+      buffer[0] = ' ';
+  }
+}
+
 HRESULT CFieldPrinter::PrintItemInfo(const CArc &arc, UInt32 index, bool techMode)
 {
   /*
@@ -421,7 +435,8 @@ HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
     #ifndef _NO_CRYPTO
     bool &passwordEnabled, UString &password,
     #endif
-    UInt64 &numErrors)
+    UInt64 &numErrors,
+    CustomArchiveItemList& dataList)
 {
   numErrors = 0;
   CFieldPrinter fieldPrinter;
@@ -586,7 +601,7 @@ HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
       RINOK(IsArchiveItemFolder(archive, i, isFolder));
       if (!wildcardCensor.CheckPath(filePath, !isFolder))
         continue;
-      
+
       fieldPrinter.PrintItemInfo(arc, i, techMode);
       
       UInt64 packSize, unpackSize;
@@ -607,6 +622,22 @@ HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
         numFiles++;
       totalPackSize += packSize;
       totalUnPackSize += unpackSize;
+
+      CustomArchiveItem item;
+      item.itemPath = filePath;
+      item.packSize = packSize;
+      item.unpackSize = unpackSize;
+      item.isFolder = isFolder;
+
+      NCOM::CPropVariant prop;
+      res = arc.Archive->GetProperty(i, kpidMTime, &prop);
+      if (res == 0) {
+        char s[32];
+        memset(&s[0], 0, sizeof(s));
+        getTime(prop, s);
+        item.time = GetUnicodeString(s);
+      }
+      dataList.Add(item);
     }
 
     if (!stdInMode && totalPackSizePointer == 0)

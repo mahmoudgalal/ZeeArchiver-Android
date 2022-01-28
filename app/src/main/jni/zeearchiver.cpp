@@ -28,8 +28,10 @@ jmethodID startArchive, checkBreak, scanProgress, updateSetNumFiles, updateSetTo
         updateSetCompleted, updateSetRatioInfo, getStream, updateSetOperationResult,
         openCheckBreak, openSetCompleted, addErrorMessage;
 
-/**********************************************************************************************/
-
+/**********************************************************************************************
+ *                             MethodIds for ArchiveItemsList
+ **********************************************************************************************/
+jmethodID archiveItemsList_addItem;
 
 
 
@@ -421,6 +423,7 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
         } else {
             LOGI("Start processing Listing Command >>>>>");
             UInt64 numErrors = 0;
+            CustomArchiveItemList &dataList = *reinterpret_cast<CustomArchiveItemList *>(environment.extraData);
             HRESULT result = ListArchives(
                     codecs,
                     formatIndices,
@@ -434,7 +437,8 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
                     options.PasswordEnabled,
                     options.Password,
 #endif
-                    numErrors);
+                    numErrors,
+                    dataList);
             if (numErrors > 0) {
                 g_StdOut << endl << "Errors: " << numErrors;
                 return NExitCode::kFatalError;
@@ -541,9 +545,50 @@ JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive
         LOGI("Listing Archive to file : %s \n", outputFilePathBuff);
         freopen(outputFilePathBuff, "w", stdout);
     }
+    CustomArchiveItemList dataList;
+    environment.extraData = &dataList;
     int ret = ProcessCommand(3, args, environment);
     if (stdoutFilePath)
         fclose(stdout);
+    return ret;
+}
+
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive2
+        (JNIEnv *env, jobject obj, jstring path, jobject itemsList) {
+    if (jvm) {
+        jvm->AttachCurrentThread(&env, NULL);
+        LOGI("jvm->AttachCurrentThread...");
+    }
+    memset(&environment, 0, sizeof(Environment));
+    environment.env = env;
+    environment.obj = obj;
+    char outbuf[1024];
+    memset(&outbuf[0], 0, sizeof(outbuf));
+    int len = env->GetStringLength(path);
+    env->GetStringUTFRegion(path, 0, len, outbuf);
+    LOGI("Listing Archive: %s \n", outbuf);
+    const char *args[3] = {"7z", "l", outbuf};
+
+    CustomArchiveItemList dataList;
+    environment.extraData = &dataList;
+    int ret = ProcessCommand(3, args, environment);
+    g_StdOut <<"Number of Items in List is :"<<dataList.Size()<<endl;
+    for (int i = 0; i < dataList.Size(); i++) {
+        jstring listItemPath = env->NewStringUTF(GetOemString(dataList[i].itemPath));
+        jstring listItemDateTime = env->NewStringUTF(GetOemString(dataList[i].time));
+        jlong unpackSize = dataList[i].unpackSize;
+        jlong packSize = dataList[i].packSize;
+        env->CallVoidMethod(itemsList,
+                            archiveItemsList_addItem,
+                            listItemPath,
+                            listItemDateTime,
+                            unpackSize,
+                            packSize,
+                            dataList[i].isFolder ? JNI_TRUE : JNI_FALSE
+        );
+        env->DeleteLocalRef(listItemPath);
+        env->DeleteLocalRef(listItemDateTime);
+    }
     return ret;
 }
 
@@ -896,6 +941,19 @@ JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_init
         LOGE("Error:couldn't get methodid of method: %s", "open_SetTotal");
 
     InitializeUpdateCallbackIds(env);
+
+    // Initialization for Java Archive List
+    jclass archiveItemsListClass = env->FindClass("com/mg/zeearchiver/data/ArchiveItemsList");
+    if (archiveItemsListClass == nullptr) {
+        LOGE("Error:couldn't get classid of class: %s", "ArchiveItemsList");
+        return;
+    }
+    archiveItemsList_addItem = env->GetMethodID(archiveItemsListClass, "addItem",
+                                                "(Ljava/lang/String;Ljava/lang/String;JJZ)V");
+    if (archiveItemsList_addItem == nullptr) {
+        LOGE("Error:couldn't get methodid of method: %s", "archiveItemsList_addItem");
+        return;
+    }
 }
 
 

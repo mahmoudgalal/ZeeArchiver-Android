@@ -60,6 +60,9 @@ JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_createArchive
 JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive
   (JNIEnv *, jobject, jstring, jstring);
 
+JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive2
+		(JNIEnv *, jobject, jstring, jobject);
+
 #ifdef __cplusplus
 }
 #endif

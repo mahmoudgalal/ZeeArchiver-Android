@@ -11,6 +11,8 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.mg.zeearchiver.data.ArchiveItemsList;
+
 public class Archive {
 	static
 	{
@@ -47,6 +49,15 @@ public class Archive {
 	 * @return error code or 0
 	 */
 	public native int listArchive(String archPath, String outputFileName);
+
+	/**
+	 * opens th archive in listing mode and returns a list of items in {@link com.mg.zeearchiver.data.ArchiveItemsList }
+	 * @param archPath archive name including path
+	 * @param itemsList passed {@link com.mg.zeearchiver.data.ArchiveItemsList } object. After successful return this should
+	 *                     contain a flatten list of all archive items
+	 * @return error code or 0
+	 */
+	public native int listArchive2(String archPath, ArchiveItemsList itemsList);
 
 	/**
 	 * Extracts the supplied archive into the given directory
