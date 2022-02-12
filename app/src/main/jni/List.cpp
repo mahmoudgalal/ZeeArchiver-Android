@@ -631,7 +631,7 @@ HRESULT ListArchives(CCodecs *codecs, const CIntVector &formatIndices,
 
       NCOM::CPropVariant prop;
       res = arc.Archive->GetProperty(i, kpidMTime, &prop);
-      if (res == 0) {
+      if (res == S_OK && prop.vt == VT_FILETIME) {
         char s[32];
         memset(&s[0], 0, sizeof(s));
         getTime(prop, s);

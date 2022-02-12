@@ -104,8 +104,8 @@ STDMETHODIMP CExtractCallbackImp::SetCompleted(const UInt64 *value)
 HRESULT CExtractCallbackImp::Open_CheckBreak()
 {
  // return ProgressDialog->Sync.ProcessStopAndPause();
-	//enviro.env->CallLongMethod(enviro.obj,open_CheckBreak);
-	return S_OK;
+	jlong ret = enviro.env->CallLongMethod(enviro.obj,open_CheckBreak);
+	return ret ;
 }
 
 HRESULT CExtractCallbackImp::Open_SetTotal(const UInt64 * numFiles/* numFiles */, const UInt64 * numBytes/* numBytes */)
@@ -113,21 +113,22 @@ HRESULT CExtractCallbackImp::Open_SetTotal(const UInt64 * numFiles/* numFiles */
   // if (numFiles != NULL) ProgressDialog->Sync.SetNumFilesTotal(*numFiles);
 	if(numFiles )//&& numBytes)
 	enviro.env->CallLongMethod(enviro.obj,open_SetTotal,(jlong)(*numFiles),0);//*numBytes);
-	return S_OK;
+    return Open_CheckBreak();
 }
 
 HRESULT CExtractCallbackImp::Open_SetCompleted(const UInt64 * /* numFiles */, const UInt64 * /* numBytes */)
 {
  // RINOK(ProgressDialog->Sync.ProcessStopAndPause());
   //// if (numFiles != NULL) ProgressDialog->Sync.SetNumFilesCur(*numFiles);
-  return S_OK;
+    return Open_CheckBreak();
 }
 
 #ifndef _NO_CRYPTO
 
 HRESULT CExtractCallbackImp::Open_CryptoGetTextPassword(BSTR *password)
 {
-  return CryptoGetTextPassword(password);
+    RINOK(Open_CheckBreak());
+    return CryptoGetTextPassword(password);
 }
 
 HRESULT CExtractCallbackImp::Open_GetPasswordIfAny(UString &password)
@@ -151,13 +152,13 @@ void CExtractCallbackImp::Open_ClearPasswordWasAskedFlag()
 
 
 #ifndef _SFX
-STDMETHODIMP CExtractCallbackImp::SetRatioInfo(const UInt64 *inSize, const UInt64 *outSize)
-{
-	//LOGI("SetRatioInfo Called ");
- // ProgressDialog->Sync.SetRatioInfo(inSize, outSize);
-	if(inSize && outSize)
-	   enviro.env->CallLongMethod(enviro.obj,setRatioInfo,(jlong)(*inSize),(jlong)(*outSize));
-  return S_OK;
+
+STDMETHODIMP CExtractCallbackImp::SetRatioInfo(const UInt64 *inSize, const UInt64 *outSize) {
+  //LOGI("SetRatioInfo Called ");
+  // ProgressDialog->Sync.SetRatioInfo(inSize, outSize);
+  if (inSize && outSize)
+    enviro.env->CallLongMethod(enviro.obj, setRatioInfo, (jlong) (*inSize), (jlong) (*outSize));
+  return Open_CheckBreak();
 }
 #endif
 
@@ -293,7 +294,7 @@ STDMETHODIMP CExtractCallbackImp::SetOperationResult(Int32 operationResult, bool
 
  // ProgressDialog->Sync.SetNumFilesCur(NumFiles);
   #endif
-  return S_OK;
+    return Open_CheckBreak();
 }
 
 ////////////////////////////////////////

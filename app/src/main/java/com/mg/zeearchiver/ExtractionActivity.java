@@ -28,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +40,7 @@ public class ExtractionActivity extends AppCompatActivity {
     static final String TAG = ExtractionActivity.class.getSimpleName();
     public static final int START_FILEBROWSER_REQUEST = 1111;
     public static final int START_DIRECTORYBROWSER_REQUEST = 1112;
-    private TextView selectedFileLbl, console, extractionFolderLbl;
+    private TextView selectedFileLbl, extractionFolderLbl;
     private String selectedArchivePath, selectedExtractionPath;
 
     private boolean lastTaskDone = true;
@@ -75,9 +74,6 @@ public class ExtractionActivity extends AppCompatActivity {
         //selectedFileLbl.setText("");
         selectedFileLbl.setEllipsize(TruncateAt.MARQUEE);
         selectedFileLbl.setSelected(true);
-
-        console = findViewById(R.id.console);
-        console.setText("");
 
         extractionFolderLbl = findViewById(R.id.extractionFolder);
         //extractionFolderLbl.setText("");
@@ -336,13 +332,13 @@ public class ExtractionActivity extends AppCompatActivity {
         private boolean errorDetected = false;
         private long curBytes, totalBytes, totalFiles, curFiles, inSize, outSize;
         private boolean bytesProgressMode = true;
-
+        private ExtractCallback extractCallback;
+        private AtomicBoolean shouldCancel = new AtomicBoolean(false);
 
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-
             lastTaskDone = false;
             PowerManager pm = (PowerManager) ExtractionActivity.this.
                     getSystemService(Context.POWER_SERVICE);
@@ -351,7 +347,6 @@ public class ExtractionActivity extends AppCompatActivity {
             //pd=ProgressDialog.show(ExtractionActivity.this, "Extracting", "Please wait...", true);
             pd = new ExtractProgressDialogView(ExtractionActivity.this, R.layout.progress_dialog);
             pd.showDialog(getString(R.string.extracting));
-            console.setText("");
         }
 
         @Override
@@ -360,12 +355,9 @@ public class ExtractionActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
             if (values != null) {
                 if (values.length == 1) {
-                    console.setText(values[0]);
                     pd.setCurrentItemText(values[0]);
                 } else if (values.length == 2) {
                     if (values[0].equalsIgnoreCase("-E")) {
-                        console.setText(getString(R.string.error) + values[1]);
-
                         showAlert(values[1], getString(R.string.error));
 
                     } else if (values[0].equalsIgnoreCase("-P")) {
@@ -406,10 +398,9 @@ public class ExtractionActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
             // TODO Auto-generated method stub
             Archive archive = new Archive();
-            ExtractCallback exback;
             if (params != null && params.length == 2) {
                 int ret = 0;
-                if ((ret = archive.extractArchive(params[0], params[1], exback = new ExtractCallback() {
+                if ((ret = archive.extractArchive(params[0], params[1], extractCallback = new ExtractCallback() {
                     String pass = null;
                     AtomicBoolean passSet = new AtomicBoolean(false);
 
@@ -487,30 +478,30 @@ public class ExtractionActivity extends AppCompatActivity {
 
                             switch (operationResult) {
                                 case 1:// kUnSupportedMethod
-                                    error = "Error:UNSUPPORTED_METHOD ";//Log.i(TAG,"Error:UNSUPPORTED_METHOD " );
+                                    error = "Error:UNSUPPORTED_METHOD ";
                                     break;
                                 case 2: //kDataError
                                     if (encrypted)
-                                        error = "Error:DATA_ERROR_ENCRYPTED";//	Log.i(TAG,"Error:DATA_ERROR_ENCRYPTED" );
+                                        error = "Error:DATA_ERROR_ENCRYPTED";
                                     else
-                                        error = "Error:DATA_ERROR";//	 Log.i(TAG,"Error:DATA_ERROR");
+                                        error = "Error:DATA_ERROR";
                                     break;
                                 case 3: //kCRCError
                                     if (encrypted)
-                                        error = "Error:CRC_ENCRYPTED";// 	Log.i(TAG,"Error:CRC_ENCRYPTED" );
+                                        error = "Error:CRC_ENCRYPTED";
                                     else
-                                        error = "CRC Error";//	 Log.i(TAG,"CRC Error");
+                                        error = "CRC Error";
                                     break;
                                 default:
                                     Log.d(TAG, "operation failed with Result:" + error);
-                                    return E_FAIL;
                             }
+                            Log.d(TAG, "operation ended with Error:" + error);
+                            return E_FAIL;
                             //publishProgress(error);
                             //addErrorMessage(error);
                         }
-                        Log.d(TAG, "operation failed with Result:" + error);
-                        //Log.i(TAG,"setOperationResult called opres="+ operationResult );
-                        return 0;
+                        Log.d(TAG, "operation ended with Result:" + operationResult);
+                        return S_OK;
                     }
 
                     @Override
@@ -582,8 +573,9 @@ public class ExtractionActivity extends AppCompatActivity {
 
                     @Override
                     public long open_CheckBreak() {
-                        // TODO Auto-generated method stub
-                        return 0;
+                        // to break(cancel) the process return any value other than 0 (S_OK)
+                        Log.d(TAG,"open_CheckBreak is called ");
+                        return shouldCancel.get() ? E_ABORT : S_OK;
                     }
 
                     @Override
@@ -661,7 +653,6 @@ public class ExtractionActivity extends AppCompatActivity {
                     @Override
                     public void beforeOpen(String name) {
                         // TODO Auto-generated method stub
-
                     }
 
                     @Override
@@ -704,7 +695,6 @@ public class ExtractionActivity extends AppCompatActivity {
             pd.dismiss();
             setProgress(Window.PROGRESS_END);
             if (!errorDetected) {
-                console.setText("");
                 Toast.makeText(ExtractionActivity.this, "Extraction done successfully !", Toast.LENGTH_LONG).show();
             }
 
@@ -714,6 +704,10 @@ public class ExtractionActivity extends AppCompatActivity {
             }
         }
 
+        void cancelExtraction(){
+            if(getStatus().equals(Status.RUNNING))
+                shouldCancel.set(true);
+        }
     }
 
 

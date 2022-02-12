@@ -50,6 +50,11 @@ public interface ExtractCallback {
 	long setCompleted(long value);
 	
 	//IOpenCallbackUI
+
+	/**
+	 * Called to decide proceeding or cancelling the extraction
+	 * @return S_OK(0) to proceed with extraction,any other value to cancel
+	 */
 	long open_CheckBreak();
 	long open_SetTotal(long numFiles /* numFiles */, long numBytes/* numBytes */);
 	long open_SetCompleted(long numFiles /* numFiles */, long numBytes/* numBytes */);
