@@ -7,13 +7,13 @@ package com.mg.zeearchiver;
 
 
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,16 +23,18 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.mg.zeearchiver.dialogs.ExtractProgressDialog;
+import com.mg.zeearchiver.dialogs.PassWordDialog;
+
+import static com.mg.zeearchiver.Archive.Constants.E_ABORT;
+import static com.mg.zeearchiver.Archive.Constants.E_FAIL;
+import static com.mg.zeearchiver.Archive.Constants.S_OK;
 
 public class ExtractionActivity extends AppCompatActivity {
 
@@ -137,7 +139,7 @@ public class ExtractionActivity extends AppCompatActivity {
                 if (!lastTaskDone)
                     return;
 
-                ArchiveExtractCallback arcExt = new ArchiveExtractCallback();
+                ArchiveExtractionTask arcExt = new ArchiveExtractionTask();
                 arcExt.execute(selectedArchivePath, selectedExtractionPath);
             }
         });
@@ -270,64 +272,9 @@ public class ExtractionActivity extends AppCompatActivity {
         builder.show();
     }
 
-    class ExtractProgressDialogView {
-        TextView currItem, percentage;
-        View root;
-        Context con;
-        AlertDialog pd;
+    private class ArchiveExtractionTask extends AsyncTask<String, String, Void> {
 
-        public ExtractProgressDialogView(Context context, int layout) {
-            con = context;
-            root = LayoutInflater.from(context).inflate(layout, null);
-            currItem = (TextView) root.findViewById(R.id.current_file);
-            currItem.setEllipsize(TruncateAt.MARQUEE);
-            currItem.setSelected(true);
-            percentage = (TextView) root.findViewById(R.id.comp_ratio);
-        }
-
-        public View getRoot() {
-            return root;
-        }
-
-        public void showDialog(String title) {
-            //view =new UpdateProgressDialogView(mainScreen.getContext(), R.layout.progress_dialog);
-            AlertDialog.Builder builder = new Builder(con);
-            pd = builder.setView(root).setTitle(title)
-                    .setCancelable(false).create();
-            pd.getWindow().setWindowAnimations(R.style.moving_dialog);
-            pd.show();
-        }
-
-        public void dismiss() {
-            if (pd != null && pd.isShowing())
-                pd.dismiss();
-        }
-
-        public void setDialogTitle(String title) {
-            pd.setTitle(title);
-        }
-
-        public void setDialogTitle(int resid) {
-            pd.setTitle(resid);
-        }
-
-        public void setCurrentItemText(String st) {
-            currItem.setText(st);
-        }
-
-        public void setPercentage(String st) {
-            percentage.setText(st);
-        }
-
-        public void setPercentage(long percent) {
-            //"Compression Ratio:"+ratio+"%"
-            percentage.setText(con.getString(R.string.compression_ratio) + ":" + percent + "%");
-        }
-    }
-
-    class ArchiveExtractCallback extends AsyncTask<String, String, Void> {
-
-        private ExtractProgressDialogView pd;
+        private ExtractProgressDialog pd;
         private PowerManager.WakeLock wl = null;
         private boolean errorDetected = false;
         private long curBytes, totalBytes, totalFiles, curFiles, inSize, outSize;
@@ -345,7 +292,13 @@ public class ExtractionActivity extends AppCompatActivity {
             wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG + UUID.randomUUID().toString());
             wl.acquire();
             //pd=ProgressDialog.show(ExtractionActivity.this, "Extracting", "Please wait...", true);
-            pd = new ExtractProgressDialogView(ExtractionActivity.this, R.layout.progress_dialog);
+            pd = new ExtractProgressDialog(ExtractionActivity.this ,new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    cancelExtraction();
+                    return null;
+                }
+            });
             pd.showDialog(getString(R.string.extracting));
         }
 
@@ -404,18 +357,6 @@ public class ExtractionActivity extends AppCompatActivity {
                     String pass = null;
                     AtomicBoolean passSet = new AtomicBoolean(false);
 
-                    final int S_OK = 0x00000000;
-                    final int S_FALSE = 0x00000001;
-                    final int E_NOTIMPL = 0x80004001;
-                    final int E_NOINTERFACE = 0x80004002;
-                    final int E_ABORT = 0x80004004;
-                    final int E_FAIL = 0x80004005;
-                    final int STG_E_INVALIDFUNCTION = 0x80030001;
-                    final int E_OUTOFMEMORY = 0x8007000E;
-                    final int E_INVALIDARG = 0x80070057;
-
-                    final int ERROR_NO_MORE_FILES = 0x100123;
-
                     @Override
                     public void guiSetPassword(String pass) {
                         passSet.set(true);
@@ -456,8 +397,8 @@ public class ExtractionActivity extends AppCompatActivity {
                     public long setRatioInfo(long inSize, long outSize) {
                         // TODO Auto-generated method stub
                         //Log.i(TAG,"InSize is:"+inSize+", outSize is:"+outSize);
-                        ArchiveExtractCallback.this.inSize = inSize;
-                        ArchiveExtractCallback.this.outSize = outSize;
+                        ArchiveExtractionTask.this.inSize = inSize;
+                        ArchiveExtractionTask.this.outSize = outSize;
                         publishProgress("-R", "");
                         return 0;
                     }
@@ -707,84 +648,6 @@ public class ExtractionActivity extends AppCompatActivity {
         void cancelExtraction(){
             if(getStatus().equals(Status.RUNNING))
                 shouldCancel.set(true);
-        }
-    }
-
-
-    class PassWordDialog extends Dialog {
-        Button passCancel, passOk;
-        EditText passtext;
-        final ExtractCallback callBack;
-
-        public PassWordDialog(Context context, ExtractCallback callback/*,Unrar unrar*/) {
-            super(context);
-            setCancelable(false);
-            //setTitle(R.string.setpassword);
-            setContentView(R.layout.pass_dialog);
-            passCancel = findViewById(R.id.passcancel);
-            passOk = findViewById(R.id.passok);
-            passtext = findViewById(R.id.passtext);
-            callBack = callback;
-
-            passOk.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    String pass = passtext.getText().toString();
-                    if (!pass.trim().isEmpty()) {
-                        InputMethodManager act = (InputMethodManager) ExtractionActivity.this
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (act != null)
-                            act.hideSoftInputFromWindow(passtext.getWindowToken()
-                                    , 0);
-                        //unrarInst.setPassWord(pass);
-                        callBack.guiSetPassword(pass);
-                        synchronized (callBack) {
-                            callBack.notifyAll();
-                        }
-                        dismiss();
-                    } else
-                        Toast.makeText(ExtractionActivity.this,
-                                "Enter a valid password", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            passCancel.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    //unrarInst.setPassWord(null);
-
-                    callBack.guiSetPassword(null);
-                    synchronized (callBack) {
-                        callBack.notifyAll();
-                    }
-                    dismiss();
-                }
-            });
-            //this.
-            setOnDismissListener(new OnDismissListener() {
-
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-					Log.i(TAG,"Dialog Dismissed....");
-                    if (!callBack.guiIsPasswordSet()) {
-                        callBack.guiSetPassword(null);
-                        synchronized (callBack) {
-                            callBack.notifyAll();
-                        }
-                    }
-                }
-            });
-
-        }
-
-        @Override
-        public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-            // TODO Auto-generated method stub
-            Log.i(TAG,"onKeyLongPress() called....");
-            return true;
         }
     }
 }

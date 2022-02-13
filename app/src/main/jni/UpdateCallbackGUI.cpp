@@ -113,30 +113,18 @@ HRESULT CUpdateCallbackGUI::FinishArchive()
 HRESULT CUpdateCallbackGUI::CheckBreak()
 {
   //return ProgressDialog->Sync.ProcessStopAndPause();
-	//if(enviro!= NULL)
-			{
-				if(enviro.env)
-				{
-					return enviro.env->CallLongMethod(enviro.obj,checkBreak);
-				}
-			}
-	return S_OK;
+	return enviro.env->CallLongMethod(enviro.obj,checkBreak);
 }
 
-HRESULT CUpdateCallbackGUI::ScanProgress(UInt64  numFolders , UInt64 numFiles, const wchar_t *path)
-{
-  //ProgressDialog->Sync.SetCurrentFileName(path);
-  //ProgressDialog->Sync.SetNumFilesTotal(numFiles);
-  //return ProgressDialog->Sync.ProcessStopAndPause();
-	//if(enviro!= NULL)
-		{
-			if(enviro.env)
-			{
-				jstring Name =enviro.env->NewStringUTF((LPCSTR)GetOemString(path));
-				enviro.env->CallLongMethod(enviro.obj,scanProgress,numFolders,(jlong)numFiles,Name);
-				enviro.env->DeleteLocalRef(Name);
-			}
-		}
+HRESULT CUpdateCallbackGUI::ScanProgress(UInt64 numFolders, UInt64 numFiles, const wchar_t *path) {
+	//ProgressDialog->Sync.SetCurrentFileName(path);
+	//ProgressDialog->Sync.SetNumFilesTotal(numFiles);
+	//return ProgressDialog->Sync.ProcessStopAndPause();
+	if (enviro.env) {
+		jstring Name = enviro.env->NewStringUTF((LPCSTR) GetOemString(path));
+		enviro.env->CallLongMethod(enviro.obj, scanProgress, numFolders, (jlong) numFiles, Name);
+		enviro.env->DeleteLocalRef(Name);
+	}
 	return CheckBreak();//S_OK;
 }
 
@@ -145,18 +133,13 @@ HRESULT CUpdateCallbackGUI::Finilize()
   return S_OK;
 }
 
-HRESULT CUpdateCallbackGUI::SetNumFiles(UInt64 numFiles)
-{
-  //ProgressDialog->Sync.SetNumFilesTotal(numFiles);
+HRESULT CUpdateCallbackGUI::SetNumFiles(UInt64 numFiles) {
+	//ProgressDialog->Sync.SetNumFilesTotal(numFiles);
 	//LOGI("NumFiles = %u",numFiles);
-	//if(enviro!= NULL)
-			{
-				if(enviro.env)
-				{
-					enviro.env->CallLongMethod(enviro.obj,updateSetNumFiles,(jlong)numFiles);
-				}
-			}
-  return S_OK;
+	if (enviro.env) {
+		enviro.env->CallLongMethod(enviro.obj, updateSetNumFiles, (jlong) numFiles);
+	}
+	return S_OK;
 }
 
 HRESULT CUpdateCallbackGUI::SetTotal(UInt64 total)
@@ -173,53 +156,41 @@ HRESULT CUpdateCallbackGUI::SetTotal(UInt64 total)
   return S_OK;
 }
 
-HRESULT CUpdateCallbackGUI::SetCompleted(const UInt64 *completeValue)
-{
-  RINOK(CheckBreak());
-  //if (completeValue != NULL)
-    //ProgressDialog->Sync.SetPos(*completeValue);
-  if (completeValue != NULL)
-	  //if(enviro!= NULL)
-			{
-				if(enviro.env)
-				{
-					enviro.env->CallLongMethod(enviro.obj,updateSetCompleted,(jlong)(*completeValue));
-				}
-			}
-	 // LOGI("SetCompleted = %u",*completeValue);
-  return S_OK;
-}
+HRESULT CUpdateCallbackGUI::SetCompleted(const UInt64 *completeValue) {
+	RINOK(CheckBreak());
+	//if (completeValue != NULL)
+	//ProgressDialog->Sync.SetPos(*completeValue);
+	if (completeValue != NULL)
 
-HRESULT CUpdateCallbackGUI::SetRatioInfo(const UInt64 *inSize, const UInt64 *outSize)
-{
-  RINOK(CheckBreak());
-  //ProgressDialog->Sync.SetRatioInfo(inSize, outSize);
-  if(inSize && outSize)
-	 // if(enviro!= NULL)
-		{
-		 if(enviro.env)
-			{
-			 enviro.env->CallLongMethod(enviro.obj,updateSetRatioInfo,(jlong)(*inSize),(jlong)(*outSize));
-			}
+		if (enviro.env) {
+			enviro.env->CallLongMethod(enviro.obj, updateSetCompleted, (jlong) (*completeValue));
 		}
-   // LOGI("SetRatioInfo = %u , %u",*inSize,*outSize);
-  return S_OK;
+	// LOGI("SetCompleted = %u",*completeValue);
+	return S_OK;
 }
 
-HRESULT CUpdateCallbackGUI::GetStream(const wchar_t *name, bool isAnti)
-{
-  //ProgressDialog->Sync.SetCurrentFileName(name);
+HRESULT CUpdateCallbackGUI::SetRatioInfo(const UInt64 *inSize, const UInt64 *outSize) {
+	RINOK(CheckBreak());
+	//ProgressDialog->Sync.SetRatioInfo(inSize, outSize);
+	if (inSize && outSize)
+
+		if (enviro.env) {
+			enviro.env->CallLongMethod(enviro.obj, updateSetRatioInfo, (jlong) (*inSize),
+									   (jlong) (*outSize));
+		}
+	// LOGI("SetRatioInfo = %u , %u",*inSize,*outSize);
+	return S_OK;
+}
+
+HRESULT CUpdateCallbackGUI::GetStream(const wchar_t *name, bool isAnti) {
+	//ProgressDialog->Sync.SetCurrentFileName(name);
 	//LOGI(GetOemString(L"CurrentFileName ="+UString()+ name));
-	//if(enviro!= NULL)
-		{
-			if(enviro.env)
-			{
-				jstring Name =enviro.env->NewStringUTF((LPCSTR)GetOemString(name));
-				enviro.env->CallLongMethod(enviro.obj,getStream,Name,isAnti?JNI_TRUE:JNI_FALSE);
-				enviro.env->DeleteLocalRef(Name);
-			}
-		}
-  return S_OK;
+	if (enviro.env) {
+		jstring Name = enviro.env->NewStringUTF((LPCSTR) GetOemString(name));
+		enviro.env->CallLongMethod(enviro.obj, getStream, Name, isAnti ? JNI_TRUE : JNI_FALSE);
+		enviro.env->DeleteLocalRef(Name);
+	}
+	return S_OK;
 }
 
 HRESULT CUpdateCallbackGUI::OpenFileError(const wchar_t *name, DWORD systemError)
@@ -265,7 +236,7 @@ HRESULT CUpdateCallbackGUI::CryptoGetTextPassword2(Int32 *passwordIsDefined, BST
       PasswordIsDefined = true;
     }
   }
-  if (passwordIsDefined != 0)
+  if (passwordIsDefined != nullptr)
     *passwordIsDefined = BoolToInt(PasswordIsDefined);
   return StringToBstr(Password, password);
 }
@@ -285,16 +256,11 @@ HRESULT CUpdateCallbackGUI::CloseProgress()
 */
 
 
-HRESULT CUpdateCallbackGUI::Open_CheckBreak()
-{
-  //return ProgressDialog->Sync.ProcessStopAndPause();
-	//if(enviro!= NULL)
-		  		{
-		  			if(enviro.env)
-		  			{
-		  			    enviro.env->CallLongMethod(enviro.obj,openCheckBreak);
-		  			}
-		  		}
+HRESULT CUpdateCallbackGUI::Open_CheckBreak() {
+	//return ProgressDialog->Sync.ProcessStopAndPause();
+	if (enviro.env) {
+		return enviro.env->CallLongMethod(enviro.obj, openCheckBreak);
+	}
 	return CheckBreak();
 	//return S_OK;
 }
@@ -305,17 +271,13 @@ HRESULT CUpdateCallbackGUI::Open_SetTotal(const UInt64 * /* numFiles */, const U
   return S_OK;
 }
 
-HRESULT CUpdateCallbackGUI::Open_SetCompleted(const UInt64 * /* numFiles */, const UInt64 * /* numBytes */)
-{
-  //return ProgressDialog->Sync.ProcessStopAndPause();
-	//if(enviro!= NULL)
-	  		{
-	  			if(enviro.env)
-	  			{
-	  			    enviro.env->CallLongMethod(enviro.obj,openSetCompleted,0,0);
-	  			}
-	  		}
+HRESULT CUpdateCallbackGUI::Open_SetCompleted(const UInt64 * /* numFiles */,
+											  const UInt64 * /* numBytes */) {
+	//return ProgressDialog->Sync.ProcessStopAndPause();
 
+	if (enviro.env) {
+		enviro.env->CallLongMethod(enviro.obj, openSetCompleted, 0, 0);
+	}
 	return CheckBreak();
 	//return S_OK;
 }

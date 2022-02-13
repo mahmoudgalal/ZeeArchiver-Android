@@ -31,9 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.app.Activity.RESULT_OK;
+import static com.mg.zeearchiver.Archive.Constants.E_ABORT;
+import static com.mg.zeearchiver.Archive.Constants.S_OK;
 import static com.mg.zeearchiver.CompressActivity.START_FOLDER_BROWSE;
 import static com.mg.zeearchiver.CompressActivity.START_SELECT_REQUEST;
 import static com.mg.zeearchiver.utils.Constants.*;
+
+import com.mg.zeearchiver.dialogs.CompressionProgressDialog;
 import com.mg.zeearchiver.utils.compression.CFormatInfo;
 import com.mg.zeearchiver.utils.compression.CInfo;
 
@@ -41,6 +45,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -48,7 +54,7 @@ import java.util.Locale;
  */
 public class CompressionFragment extends Fragment {
 
-    static final String TAG = "libZeeArchiver";
+    static final String TAG = CompressionFragment.class.getSimpleName();
     static final int kNoSolidBlockSize = 0;
     static final int kSolidBlockSize = 64;
     private boolean isTaskDone =true;
@@ -1456,62 +1462,28 @@ public class CompressionFragment extends Fragment {
         long value;
     }
 
-    class UpdateProgressDialogView
-    {
-        TextView currItem,percentage;
-        View root;
-        Context context;
-        public UpdateProgressDialogView(Context context,int layout) {
-
-            this.context = context;
-            root=LayoutInflater.from(context).inflate(layout, null);
-            currItem=(TextView)root.findViewById(R.id.current_file);
-            currItem.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            currItem.setSelected(true);
-            percentage = (TextView) root.findViewById(R.id.comp_ratio);
-
-        }
-        public View getRoot()
-        {
-            return root;
-        }
-
-        public void setCurrentItemText(String st)
-        {
-            currItem.setText(st);
-        }
-        public void setPercentage(String st)
-        {
-            percentage.setText(st);
-        }
-        public void setPercentage(long percent)
-        {
-            percentage.setText(context.getString(R.string.compression_ratio)+":"+percent+"%");
-        }
-
-    }
-
     class UpdateTask extends AsyncTask<CInfo, String, Void> implements UpdateCallback
     {
-        AlertDialog compressionProgressDialog;
-        UpdateProgressDialogView view;
+        private CompressionProgressDialog compressionProgressDialog;
         long curBytes,totalBytes,totalFiles,curFiles,inSize,outSize;
         boolean bytesProgressMode=true;
         private PowerManager.WakeLock wl=null;
+        private final AtomicBoolean shouldCancel = new AtomicBoolean(false);
 
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
             isTaskDone = false;
-            view = new UpdateProgressDialogView(getActivity(), R.layout.progress_dialog);
-            AlertDialog.Builder  builder=new AlertDialog.Builder(getActivity());
-            compressionProgressDialog = builder.setView(view.getRoot())
-                    .setTitle(getActivity().getString(R.string.compressing))
-                    .setCancelable(false).create();
-            compressionProgressDialog.getWindow().setWindowAnimations(R.style.moving_dialog);
-            compressionProgressDialog.show();
-            PowerManager pm = (PowerManager) getActivity().
+            compressionProgressDialog = new CompressionProgressDialog(requireActivity(), new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    shouldCancel.set(true);
+                    return null;
+                }
+            });
+            compressionProgressDialog.showDialog(getString(R.string.compressing));
+            PowerManager pm = (PowerManager) requireActivity().
                     getSystemService(Context.POWER_SERVICE);
             wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
             wl.acquire();
@@ -1539,7 +1511,7 @@ public class CompressionFragment extends Fragment {
             if(values !=null)
             {
                 if(values.length==1)
-                    view.setCurrentItemText(values[0]);
+                    compressionProgressDialog.setCurrentItemText(values[0]);
                 else if(values.length==2)
                 {
                     if(values[0].equalsIgnoreCase("-R"))
@@ -1549,7 +1521,7 @@ public class CompressionFragment extends Fragment {
                         {
                             long ratio = packSize * 100 / unpackSize;
                             // view.setPercentage("Compression Ratio:"+ratio+"%");
-                            view.setPercentage(ratio);
+                            compressionProgressDialog.setPercentage(ratio);
                         }
                     }
                     else if(values[0].equalsIgnoreCase("-P"))
@@ -1561,15 +1533,15 @@ public class CompressionFragment extends Fragment {
                         int percentValue = (int)(curBytes * 100 / totalBytes);
                         if(percentValue != Integer.MAX_VALUE)
                         {
-                            compressionProgressDialog.setTitle(getActivity().getString(R.string.compressing)+
+                            compressionProgressDialog.setDialogTitle(getActivity().getString(R.string.compressing)+
                                     " "+percentValue+"%");
                             (getActivity()).setProgress(100*percentValue);
                         }
                     }
                     else if(values[0].equalsIgnoreCase("-E"))
                     {
-                        compressionProgressDialog.setTitle(getActivity().getString(R.string.error));
-                        view.setCurrentItemText(values[1]);
+                        compressionProgressDialog.setDialogTitle(getActivity().getString(R.string.error));
+                        compressionProgressDialog.setCurrentItemText(values[1]);
                         showAlert(values[1], getActivity().getString(R.string.error));
                     }
                 }
@@ -1592,7 +1564,6 @@ public class CompressionFragment extends Fragment {
             (getActivity()).setProgress(Window.PROGRESS_END);
 
             isTaskDone = true;
-
         }
 
         @Override
@@ -1604,34 +1575,34 @@ public class CompressionFragment extends Fragment {
         @Override
         public long startArchive(String name, boolean updating) {
             // TODO Auto-generated method stub
-            return 0;
+            return S_OK;
         }
 
         @Override
         public long checkBreak() {
-            // TODO Auto-generated method stub
-            return 0;
+            Log.d(TAG,"checkBreak is called ");
+            return shouldCancel.get() ? E_ABORT : S_OK;
         }
 
         @Override
         public long scanProgress(long numFolders, long numFiles, String path) {
             // TODO Auto-generated method stub
             totalFiles = numFiles;
-            return 0;
+            return S_OK;
         }
 
         @Override
         public long setNumFiles(long numFiles) {
             // TODO Auto-generated method stub
             totalFiles = numFiles;
-            return 0;
+            return S_OK;
         }
 
         @Override
         public long setTotal(long total) {
             // TODO Auto-generated method stub
             totalBytes = total;curBytes = 0;
-            return 0;
+            return S_OK;
         }
 
         @Override
@@ -1639,7 +1610,7 @@ public class CompressionFragment extends Fragment {
             // TODO Auto-generated method stub
             curBytes=completeValue;
             publishProgress("-P","");
-            return 0;
+            return S_OK;
         }
 
         @Override
@@ -1648,7 +1619,7 @@ public class CompressionFragment extends Fragment {
             this.inSize = inSize;
             this.outSize =outSize;
             publishProgress("-R","");
-            return 0;
+            return S_OK;
         }
 
         @Override
@@ -1656,26 +1627,26 @@ public class CompressionFragment extends Fragment {
             // TODO Auto-generated method stub
             Log.i(TAG, "Current File:"+name);
             publishProgress(name);
-            return 0;
+            return S_OK;
         }
 
         @Override
         public long setOperationResult(long operationResult) {
             // TODO Auto-generated method stub
             curFiles = operationResult;
-            return 0;
+            return S_OK;
         }
 
         @Override
         public long openCheckBreak() {
-            // TODO Auto-generated method stub
-            return 0;
+            Log.d(TAG,"openCheckBreak is called ");
+            return shouldCancel.get() ? E_ABORT : S_OK;
         }
 
         @Override
         public long openSetCompleted(long numFiles, long numBytes) {
             // TODO Auto-generated method stub
-            return 0;
+            return S_OK;
         }
 
     }

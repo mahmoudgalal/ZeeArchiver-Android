@@ -8,7 +8,6 @@ package com.mg.zeearchiver;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.util.Log;
 
 import com.mg.zeearchiver.data.ArchiveItemsList;
@@ -194,4 +193,17 @@ public class Archive {
 	}
 	private List<ArchiveFormat> supportedFormats = new ArrayList<>();
 	private List<Codec> supportedCodecs = new ArrayList<>();
+
+	public interface Constants {
+		int S_OK = 0x00000000;
+		int S_FALSE = 0x00000001;
+		int E_NOTIMPL = 0x80004001;
+		int E_NOINTERFACE = 0x80004002;
+		int E_ABORT = 0x80004004;
+		int E_FAIL = 0x80004005;
+		int STG_E_INVALIDFUNCTION = 0x80030001;
+		int E_OUTOFMEMORY = 0x8007000E;
+		int E_INVALIDARG = 0x80070057;
+		int ERROR_NO_MORE_FILES = 0x100123;
+	}
 }

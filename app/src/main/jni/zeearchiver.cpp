@@ -478,12 +478,15 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
                 messageWasDisplayed, &callback, *(reinterpret_cast<CInfo *>(env.extraData)));
 
         if (result != S_OK) {
+            CSysString message;
+            NError::MyFormatMessage(result, message);
+            LOGE("Error, SystemException: %s", (LPCSTR)GetOemString(message));
+            if(result == E_ABORT)
+                return result;
             if (result != E_ABORT && messageWasDisplayed) {
                 LOGE("Error, kFatalError:%d", result);
                 return NExitCode::kFatalError;
             }
-            LOGE("Error, SystemException:%d", result);
-            throw CSystemException(result);
         }
         if (callback.FailedFiles.Size() > 0) {
             if (!messageWasDisplayed) {
