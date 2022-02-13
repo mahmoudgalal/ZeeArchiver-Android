@@ -35,6 +35,7 @@
                 android:ems="10"
                 android:hint="@string/archive_name_hint"
                 android:lines="1"
+                android:singleLine="true"
                 android:maxLines="1"
                 android:minLines="1"
                 android:scrollHorizontally="true">
@@ -51,14 +52,13 @@
 
                 <TextView
                     android:id="@+id/archive_path"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-
                     android:layout_weight="1"
                     android:background="#888888"
-                    android:gravity="center_vertical"
                     android:hint="@string/output_directory"
                     android:lines="1"
+                    android:gravity="center_vertical"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:maxLines="1"
                     android:paddingLeft="4dp"
@@ -72,8 +72,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/browse"
+                    android:textAllCaps="false"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="italic" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,16 +86,14 @@
 
                 <TextView
                     android:id="@+id/archive_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="#888888"
                     android:ellipsize="marquee"
                     android:gravity="center_vertical"
                     android:hint="@string/files_to_compress"
-
                     android:marqueeRepeatLimit="marquee_forever"
-
                     android:paddingLeft="4dp"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
@@ -103,12 +102,12 @@
 
                 <Button
                     android:id="@+id/browse_to"
-                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
                     android:text="@string/select"
-                    android:textStyle="bold" />
+                    android:textStyle="italic" />
             </LinearLayout>
 
 
@@ -284,7 +283,7 @@
         android:id="@+id/compress_ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:textAllCaps="false"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:minWidth="52dp"

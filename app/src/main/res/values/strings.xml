@@ -34,7 +34,7 @@
     <string name="extract_to_hint">Extract to:</string>
     <string name="open_archive_hint">Archive:</string>
     <string name="archive_name_hint">Archive Name</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Browse..</string>
     <string name="select">Select...</string>
     <string name="archive_format">Archive format:</string>
     <string name="compression_level">Compression level:</string>

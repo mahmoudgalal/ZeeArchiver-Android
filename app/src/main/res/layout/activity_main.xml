@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ExtractionActivity" >
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".ExtractionActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -38,9 +38,7 @@
             android:clickable="true"
             android:ellipsize="marquee"
             android:focusable="true"
-
             android:focusableInTouchMode="true"
-
             android:hint="@string/open_archive_hint"
             android:marqueeRepeatLimit="marquee_forever"
             android:padding="5dp"
@@ -55,10 +53,10 @@
             android:id="@+id/open_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:minWidth="60dp"
+            android:minWidth="110dp"
             android:minHeight="60dp"
             android:text="@string/open_archive"
+            android:textAllCaps="false"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -104,9 +102,9 @@
             android:id="@+id/btn_extract_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:minHeight="60dp"
             android:text="@string/extract_to"
+            android:textAllCaps="false"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -123,9 +121,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
+        android:minWidth="200dp"
+        android:minHeight="60dp"
         android:text="@string/extract"
+        android:textAllCaps="false"
         android:textSize="24sp"
         android:textStyle="bold" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
