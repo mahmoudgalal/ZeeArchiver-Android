@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="Password:"
+        android:text="@string/password"
         android:textSize="20sp"
         android:textStyle="bold" />
 

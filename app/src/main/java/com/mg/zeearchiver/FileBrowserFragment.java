@@ -40,6 +40,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 import static android.view.View.GONE;
@@ -235,8 +236,10 @@ public class FileBrowserFragment extends Fragment  implements FileListAdapter.On
     @Override
     public void onItemClicked(View view, FileEntry fileEntry) {
         if (fileEntry.getFile().isDirectory()) {
-            LoadingTask task = new LoadingTask();
-            task.execute(fileEntry.getFile());
+            if(fileEntry.getFile().canRead()){
+                LoadingTask task = new LoadingTask();
+                task.execute(fileEntry.getFile());
+            }
         }
         else
         {
@@ -244,7 +247,7 @@ public class FileBrowserFragment extends Fragment  implements FileListAdapter.On
             {
 
             }
-            else if(browseMode== BROWSE_MODE_SELECT )
+            else if(browseMode == BROWSE_MODE_SELECT )
             {
                 fileEntry.setSelected(!fileEntry.isSelected());
                 if(fileEntry.isSelected())
@@ -281,15 +284,22 @@ public class FileBrowserFragment extends Fragment  implements FileListAdapter.On
                 pd=ProgressDialog.show(getContext(), "", "Loading...", true, false);
             firstTime=true;
         }
+
         @Override
         protected Void doInBackground(File... params) {
-            fileEntries.addAll( browseTo(params[0]));
-            Collections.sort(fileEntries, new Comparator<FileEntry>() {
-                @Override
-                public int compare(FileEntry fileEntry, FileEntry t1) {
-                    return fileEntry.getFileName().compareTo(t1.getFileName());
-                }
-            });
+            File root = params[0];
+            List<FileEntry> dirContents = browseTo(root);
+            if (dirContents.size() > 1) {
+                FileEntry parent = dirContents.remove(0);
+                Collections.sort(dirContents, new Comparator<FileEntry>() {
+                    @Override
+                    public int compare(FileEntry fileEntry, FileEntry t1) {
+                        return fileEntry.getFileName().compareTo(t1.getFileName());
+                    }
+                });
+                dirContents.add(0, parent);
+            }
+            fileEntries.addAll(dirContents);
             return null;
         }
         @Override
