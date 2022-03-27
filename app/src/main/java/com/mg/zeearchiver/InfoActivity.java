@@ -6,17 +6,13 @@
 package com.mg.zeearchiver;
 
 import java.util.List;
-
-import com.mg.zeearchiver.R;
 import com.mg.zeearchiver.adapters.CodecsInfoAdapter;
 import com.mg.zeearchiver.adapters.FormatsInfoAdapter;
-
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -73,7 +69,6 @@ public class InfoActivity extends AppCompatActivity {
 		List<Archive.Codec> codecs = null;
        @Override
 	    protected void onPostExecute(Void result) {
-	    	// TODO Auto-generated method stub
 	    	super.onPostExecute(result);
 	    	formatsInfoAdapter.setItems(formats);
 	    	codecsInfoAdapter.setItems(codecs);
@@ -83,7 +78,6 @@ public class InfoActivity extends AppCompatActivity {
 	    }
 		@Override
 		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
 			Archive arc = new Archive();
 			formats = arc.getSupportedFormats();
 			codecs = arc.getSupportedCodecs();

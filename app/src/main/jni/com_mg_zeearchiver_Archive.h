@@ -34,7 +34,7 @@ JNIEXPORT jlong JNICALL Java_com_mg_zeearchiver_Archive_getRamSize
  * Method:    print5zInfo
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print5zInfo
+JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print7zInfo
   (JNIEnv *, jobject);
 
 /*

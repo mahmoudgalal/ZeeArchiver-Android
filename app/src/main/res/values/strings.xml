@@ -85,5 +85,8 @@
     <string name="files_to_compress">Files to Compress:*</string>
     <string name="output_directory">Output Directory:*</string>
     <string name="enter_archive_name">Enter Archive Name:*</string>
+    <string name="select_file">Select File:</string>
+    <string name="select_files">Select File/s:</string>
+    <string name="select_directory">Select Directory:</string>
 
 </resources>

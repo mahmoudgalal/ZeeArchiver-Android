@@ -34,9 +34,6 @@ jmethodID startArchive, checkBreak, scanProgress, updateSetNumFiles, updateSetTo
 jmethodID archiveItemsList_addItem;
 
 
-
-
-
 #include "StdAfx.h"
 
 #if defined( _7ZIP_LARGE_PAGES)
@@ -480,8 +477,8 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
         if (result != S_OK) {
             CSysString message;
             NError::MyFormatMessage(result, message);
-            LOGE("Error, SystemException: %s", (LPCSTR)GetOemString(message));
-            if(result == E_ABORT)
+            LOGE("Error, SystemException: %s", (LPCSTR) GetOemString(message));
+            if (result == E_ABORT)
                 return result;
             if (result != E_ABORT && messageWasDisplayed) {
                 LOGE("Error, kFatalError:%d", result);
@@ -514,7 +511,12 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 void JNI_OnUnload(JavaVM *, void *) {
 }
 
-JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print5zInfo
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+JNIEXPORT void JNICALL Java_com_mg_zeearchiver_Archive_print7zInfo
+
         (JNIEnv *env, jobject obj) {
     memset(&environment, 0, sizeof(Environment));
     environment.env = env;
@@ -575,7 +577,7 @@ JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_listArchive2
     CustomArchiveItemList dataList;
     environment.extraData = &dataList;
     int ret = ProcessCommand(3, args, environment);
-    g_StdOut <<"Number of Items in List is :"<<dataList.Size()<<endl;
+    g_StdOut << "Number of Items in List is :" << dataList.Size() << endl;
     for (int i = 0; i < dataList.Size(); i++) {
         jstring listItemPath = env->NewStringUTF(GetOemString(dataList[i].itemPath));
         jstring listItemDateTime = env->NewStringUTF(GetOemString(dataList[i].time));
@@ -1049,6 +1051,10 @@ JNIEXPORT jint JNICALL Java_com_mg_zeearchiver_Archive_createArchive
     args = NULL;
     return ret;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 
 

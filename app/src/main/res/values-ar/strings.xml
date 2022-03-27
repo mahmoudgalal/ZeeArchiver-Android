@@ -78,7 +78,10 @@
           mahmoudgalal57@yahoo.com </string>
 	<string name="NO_FILE_CHOSEN_MSG"> اضغط افتح ارشيف  كى تختار ملف يمكن فكه  </string>
 	<string name="NO_EXTR_PATH_SELECTED">قبل الفك اختار مسار يمكن فك الملف فيه</string>
-    <string name="files_to_compress">Files to Compress:</string>
-    <string name="output_directory">Output Directory:</string>
-    <string name="enter_archive_name">Enter Archive Name:</string>
+    <string name="files_to_compress">الملفات المراد ضغطها:</string>
+    <string name="output_directory">دليل الإخراج:</string>
+    <string name="enter_archive_name">أدخل اسم الأرشيف:</string>
+    <string name="select_file">حدد ملفًا:</string>
+    <string name="select_files">حدد الملف / الملفات:</string>
+    <string name="select_directory">فك فى:</string>
 </resources>

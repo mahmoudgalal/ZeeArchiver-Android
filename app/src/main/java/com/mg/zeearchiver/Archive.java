@@ -23,7 +23,7 @@ public class Archive {
 	/**
 	 * Prints all information(Formats ,codecs...etc) about the 7z library
 	 */
-	public native void print5zInfo();
+	public native void print7zInfo();
 
 	/**
 	 * Must be called before any other API
