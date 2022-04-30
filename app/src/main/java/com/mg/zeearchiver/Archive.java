@@ -15,6 +15,7 @@ import com.mg.zeearchiver.data.ArchiveItemsList;
 public class Archive {
 	static
 	{
+		System.loadLibrary("Rar");
 		System.loadLibrary("7z");
 		System.loadLibrary("zeearchiver");
 		init();

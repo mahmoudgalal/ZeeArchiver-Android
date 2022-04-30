@@ -11,7 +11,7 @@ android {
         targetSdkVersion 27
 
         ndk {
-            moduleName "S7z"
+            abiFilters 'arm64-v8a', 'x86_64'
         }
         multiDexEnabled true
     }

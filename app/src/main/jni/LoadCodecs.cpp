@@ -56,7 +56,8 @@ static CSysString GetLibraryFolderPrefix()
 
 #define kCodecsFolderName TEXT("Codecs")
 #define kFormatsFolderName TEXT("Formats")
-static const TCHAR *kMainDll = TEXT("lib7z.so");
+static const TCHAR *kMainDll = TEXT("lib7z.so");// Main 7z module
+static const TCHAR *kRarDll = TEXT("libRar.so");// Rar plugin
 
 #ifdef _WIN32
 static LPCTSTR kRegistryPath = TEXT("Software") TEXT(STRING_PATH_SEPARATOR) TEXT("7-zip");
@@ -481,6 +482,8 @@ HRESULT CCodecs::Load()
   #ifdef EXTERNAL_CODECS
   const CSysString baseFolder = GetBaseFolderPrefixFromRegistry();
   RINOK(LoadDll(baseFolder + kMainDll, false));
+  // Enforce loading Rar plugin module
+  RINOK(LoadDll(baseFolder + kRarDll, true));
   RINOK(LoadDllsFromFolder(baseFolder + kCodecsFolderName TEXT(STRING_PATH_SEPARATOR)));
   RINOK(LoadDllsFromFolder(baseFolder + kFormatsFolderName TEXT(STRING_PATH_SEPARATOR)));
   #endif

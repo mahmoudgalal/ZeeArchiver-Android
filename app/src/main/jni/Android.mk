@@ -1,24 +1,15 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE    := S7z 
-ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-  # ... do something ...
-LOCAL_SRC_FILES := prebuilt/arm64-v8a/lib7z.so
-endif
-ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-  # ... do something ...
-LOCAL_SRC_FILES := prebuilt/armeabi-v7a/lib7z.so
-endif
-ifeq ($(TARGET_ARCH_ABI),x86)
-  # ... do something ...
-LOCAL_SRC_FILES := prebuilt/x86/lib7z.so
-endif
-ifeq ($(TARGET_ARCH_ABI),x86_64)
-  # ... do something ...
-LOCAL_SRC_FILES := prebuilt/x86_64/lib7z.so
-endif
+LOCAL_MODULE    := S7z
+LOCAL_SRC_FILES := prebuilt/$(TARGET_ARCH_ABI)/lib7z.so
 include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE    := Rar
+LOCAL_SRC_FILES := prebuilt/$(TARGET_ARCH_ABI)/libRar.so
+include $(PREBUILT_SHARED_LIBRARY)
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := zeearchiver
@@ -76,5 +67,5 @@ mySplitCommandLine.cpp \
 myAddExeFlag.cpp \
 wine_date_and_time.cpp
 LOCAL_LDLIBS    := -llog
-LOCAL_SHARED_LIBRARIES := S7z
+LOCAL_SHARED_LIBRARIES := S7z Rar
 include $(BUILD_SHARED_LIBRARY)

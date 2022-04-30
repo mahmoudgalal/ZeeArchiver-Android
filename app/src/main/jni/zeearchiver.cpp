@@ -414,8 +414,10 @@ int ProcessCommand(int numArgs, const char *args[], Environment &env) {
                 LOGI("Calling ExtractGUI Error,Throwing Exception");
                 // throw CSystemException(result);
             }
-            if (!ecs->IsOK())
+            if (!ecs->IsOK()){
+                LOGI("Extraction Error!!");
                 return NExitCode::kFatalError;
+            }
             LOGI("Extraction Completed Successfully");
         } else {
             LOGI("Start processing Listing Command >>>>>");
