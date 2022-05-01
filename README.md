@@ -12,7 +12,18 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
   - Open the ZeeArchiver project in android studio and start building the app.
 <br/>
 <i>Note that the app adds a small jni layer(<b>libzeearchiver.so</b>) over lib7z.so module to make use of the 7z library in a proper way for android</i>.
-<br/>   
+<br/> 
+
+### Migrating to p7zip v16.02:<br/>
+<b>P7zip v16.02</b> adds alot of enhancements & fixes to the original port in addition to supporting Rar5 format.<br/> 
+To build the app against the newest P7zip version(stripped-down clone of v16.02 is added to this repo) ,
+simply you have to build it separatly as before using the same instructions as above with some minor changes:
+- Build The Plugins:<br/>
+  1- In your terminal, Browse to "p7zip_16.02/CPP/ANDROID/Format7zFree/jni/" to build 7z.so plugin using the ndk as above.<br/>
+  2- In your terminal, Browse to "p7zip_16.02/CPP/7zip/Compress/Rar/jni/" to build Rar.so codec (for decompressing Rar archives) using the ndk as above.<br/>
+  3- Copy the resulting <b>7z.so & Rar.so</b> to the "/Prebuilt/" directory for the approperiate target architecture as above.<br/>
+  4- Open the ZeeArchiver project in android studio and start building the app.
+
 <b>Features:</b><br/>
 
 - Supports the following formats:
