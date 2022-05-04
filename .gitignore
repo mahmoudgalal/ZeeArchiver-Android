@@ -51,6 +51,8 @@ proguard/
 # Log Files
 *.log
 *.bat
+*.o
+*.o.d
 
 # Android Studio Navigation editor temp files
 .navigation/
@@ -101,6 +103,8 @@ fastlane/readme.md
 # Built application files
 /*/build/
 /*/.cxx/
+/*/.vs/
+**/obj/local/
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
 

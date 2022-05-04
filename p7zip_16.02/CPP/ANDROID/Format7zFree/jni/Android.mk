@@ -9,10 +9,12 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := 7z
-
+LOCAL_SHORT_COMMANDS := true
 LOCAL_CFLAGS := -DANDROID_NDK  -fexceptions \
 	-DNDEBUG -D_REENTRANT -DENV_UNIX \
+	-D_7ZIP_ST \
 	-DEXTERNAL_CODECS \
+	-DBREAK_HANDLER \
 	-DUNICODE -D_UNICODE -DUNIX_USE_WIN_FILE \
 	-I../../../Windows \
 	-I../../../Common \
