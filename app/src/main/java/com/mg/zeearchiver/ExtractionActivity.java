@@ -6,6 +6,7 @@
 package com.mg.zeearchiver;
 
 
+import java.io.File;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.mg.zeearchiver.dialogs.ExtractProgressDialog;
 import com.mg.zeearchiver.impls.ExtractCallbackImpl;
+import com.mg.zeearchiver.utils.Utils;
 
 public class ExtractionActivity extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class ExtractionActivity extends AppCompatActivity {
     public static final int START_DIRECTORYBROWSER_REQUEST = 1112;
     private TextView selectedFileLbl, extractionFolderLbl;
     private String selectedArchivePath, selectedExtractionPath;
+    private Uri selectedArchiveUri;
 
     private boolean lastTaskDone = true;
     private Button extract;
@@ -113,7 +116,11 @@ public class ExtractionActivity extends AppCompatActivity {
                 return;
 
             ArchiveExtractionTask arcExt = new ArchiveExtractionTask();
-            arcExt.execute(selectedArchivePath, selectedExtractionPath);
+            if (Utils.INSTANCE.isCachedArchive(this, selectedArchivePath)) {
+                arcExt.execute(selectedArchivePath, selectedExtractionPath, selectedArchiveUri.toString());
+            } else {
+                arcExt.execute(selectedArchivePath, selectedExtractionPath);
+            }
         });
         checkStartIntent();
 
@@ -122,8 +129,9 @@ public class ExtractionActivity extends AppCompatActivity {
     void checkStartIntent() {
         Intent intent = getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-
-            String path = getPath(this, intent.getData());
+            selectedArchiveUri = intent.getData();
+            String path = Utils.INSTANCE.getTempPath(this, selectedArchiveUri);
+            Log.d(TAG, "File at:" + selectedArchiveUri.getEncodedPath() + " is requested ,path =" + path);
             if (path != null && !path.isEmpty()) {
                 selectedFileLbl.setText(path);
                 selectedArchivePath = path;
@@ -315,17 +323,30 @@ public class ExtractionActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
             Archive archive = new Archive();
-            if (params != null && params.length == 2) {
-                int ret = 0;
+            if (params != null && params.length > 1) {
+                String archivePath = params[0];
+                String extractionDirectory = params[1];
+                int ret;
+                boolean isUri = params.length == 3;
+                if (isUri) {
+                    String selectedUriString = params[2];
+                    Uri selectedArcUri = Uri.parse(selectedUriString);
+                    Log.d(TAG, "Copying archive file:" + selectedUriString + " to cache directory");
+                    Utils.INSTANCE.copyFileToCache(ExtractionActivity.this, selectedArcUri);
+                }
                 ExtractCallback extractCallback = new ExtractCallbackImpl(ExtractionActivity.this,
                         this::onExtractionUpdate, shouldCancel);
-                if ((ret = archive.extractArchive(params[0], params[1], extractCallback)) != 0)    //error case
+                if ((ret = archive.extractArchive(archivePath, extractionDirectory, extractCallback)) != 0)    //error case
                 {
-                    Log.i(TAG, "Extract Archive Error:" + ret);
+                    Log.d(TAG, "Extract Archive Error:" + ret);
                     publishProgress("-E", "Extract Archive Error:" + ret);
                     errorDetected = true;
                 } else
                     errorDetected = false;
+
+                if (isUri) { // Cached archive should be deleted.
+                    Utils.INSTANCE.deleteFile(archivePath);
+                }
             }
             return null;
         }
