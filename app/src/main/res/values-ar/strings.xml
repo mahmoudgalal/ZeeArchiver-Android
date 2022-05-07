@@ -15,7 +15,7 @@
     <string name="compression_level">مستوى الضغط:</string>
     <string name="compression_method">طريقة الضغط:</string>
     <string name="compression_ratio">نسبة الضغط</string>
-    <string name="copyright">جميع الحقوق محفوظة ©  2018 محمود جلال</string>
+    <string name="copyright">جميع الحقوق محفوظة ©  2022 محمود جلال</string>
     <string name="create_archive">ارشيف جديد</string>
     <string name="dictionary_size">حجم القاموس:</string>
     <string name="encrypt_file_names">تشفير اسماء الملفات</string>
@@ -74,7 +74,7 @@
     <string name="word_size">حجم الكلمة:</string>
     <string name="yes">نعم</string>
     <string name="file_not_accessible">لايمكن قراءة هذا الملف</string>
-    <string name="about_msg">زيي هو اداة ضغط وفك ضغط فعالة وسهلة الاستخدام يمكنها الضغط الى او فك الضغط من كل الصيغات المدعومة بواسطة الاداة الشهيرة سفن زيب.كل الحقوق محفوظة  © 2018 محمود جلال .للدعم اتصل بى :
+    <string name="about_msg">زيي هو اداة ضغط وفك ضغط فعالة وسهلة الاستخدام يمكنها الضغط الى او فك الضغط من كل الصيغات المدعومة بواسطة الاداة الشهيرة سفن زيب.كل الحقوق محفوظة  © 2022 محمود جلال .للدعم اتصل بى :
           mahmoudgalal57@yahoo.com </string>
 	<string name="NO_FILE_CHOSEN_MSG"> اضغط افتح ارشيف  كى تختار ملف يمكن فكه  </string>
 	<string name="NO_EXTR_PATH_SELECTED">قبل الفك اختار مسار يمكن فك الملف فيه</string>

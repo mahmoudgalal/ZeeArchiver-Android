@@ -6,13 +6,12 @@
 
 package com.mg.zeearchiver;
 
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 public class CompressActivity extends AppCompatActivity {
 

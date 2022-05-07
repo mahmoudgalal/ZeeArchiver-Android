@@ -5,16 +5,14 @@
 
 package com.mg.zeearchiver.adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.mg.zeearchiver.Archive.*;
 import com.mg.zeearchiver.R;
-
 import java.util.List;
 
 public class CodecsInfoAdapter extends RecyclerView.Adapter<CodecsInfoAdapter.ViewHolder> {

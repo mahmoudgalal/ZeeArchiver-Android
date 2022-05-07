@@ -20,7 +20,7 @@ class CompressionProgressDialog(private val con: Context, cancelAction: Callable
         val builder = AlertDialog.Builder(con)
         pd = builder.setView(root).setTitle(title)
                 .setCancelable(false).create()
-        pd.window.setWindowAnimations(R.style.moving_dialog)
+        pd.window?.setWindowAnimations(R.style.moving_dialog)
         pd.show()
     }
 

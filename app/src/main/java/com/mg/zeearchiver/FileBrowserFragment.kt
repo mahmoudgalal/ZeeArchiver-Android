@@ -11,10 +11,6 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
-import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +20,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mg.zeearchiver.adapters.FileListAdapter
 import com.mg.zeearchiver.utils.FileEntry
 import java.io.File
@@ -120,19 +120,13 @@ class FileBrowserFragment : Fragment(), FileListAdapter.OnItemClickListener {
             fl += fentry
         }
         val files = location.listFiles()
-        if (files != null) for (file in files) {
-            if (file.isDirectory) {
+        if (files != null)
+            for (file in files) {
                 val fentry = FileEntry()
-                fentry.isDirectory = true
-                fentry.file = file
-                fl.add(fentry)
-            } else {
-                val fentry = FileEntry()
-                fentry.isDirectory = false
+                fentry.isDirectory = file.isDirectory
                 fentry.file = file
                 fl += fentry
             }
-        }
         return fl
     }
 
@@ -174,7 +168,6 @@ class FileBrowserFragment : Fragment(), FileListAdapter.OnItemClickListener {
     internal inner class LoadingTask : AsyncTask<File, Void?, Void?>() {
         private var pd: ProgressDialog? = null
         override fun onPreExecute() {
-            super.onPreExecute()
             fileEntries.clear()
             fileListAdapter.notifyDataSetChanged()
             if (firstTime) pd = ProgressDialog.show(context, "", "Loading...", true, false)
@@ -187,14 +180,13 @@ class FileBrowserFragment : Fragment(), FileListAdapter.OnItemClickListener {
             fileEntries.add(dirContents[0])
             if (dirContents.size > 1) {
                 fileEntries.addAll(dirContents.drop(1).sortedBy {
-                    it.fileName
+                    it.fileName.toUpperCase()
                 })
             }
             return null
         }
 
         override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
             val mCurrentDir = File(currentPath)
             listHeader.text = if (mCurrentDir.name.isEmpty()) mCurrentDir.path else mCurrentDir.name
             fileListAdapter.notifyDataSetChanged()

@@ -6,18 +6,15 @@
 package com.mg.zeearchiver.adapters;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.mg.zeearchiver.R;
 import com.mg.zeearchiver.utils.FileEntry;
-
 import java.util.List;
-
 import static com.mg.zeearchiver.FileBrowserFragment.BROWSE_MODE_SELECT;
 
 public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHolder> {
@@ -32,6 +29,7 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
         this.items = items;
         onItemClickListener = listener;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,28 +49,22 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
             else
                 holder.itemView.setBackgroundColor(Color.rgb(0x44, 0x44, 0x44));
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(onItemClickListener != null){
-                    onItemClickListener.onItemClicked(view,fe);
-                }
+        holder.itemView.setOnClickListener(view -> {
+            if(onItemClickListener != null){
+                onItemClickListener.onItemClicked(view,fe);
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if(onItemClickListener != null){
-                    return onItemClickListener.onItemLongClicked(view,fe);
-                }
-                return true;
+        holder.itemView.setOnLongClickListener(view -> {
+            if(onItemClickListener != null){
+                return onItemClickListener.onItemLongClicked(view,fe);
             }
+            return true;
         });
     }
 
     @Override
     public int getItemCount() {
-        return items != null?items.size():0;
+        return items != null ? items.size() : 0;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

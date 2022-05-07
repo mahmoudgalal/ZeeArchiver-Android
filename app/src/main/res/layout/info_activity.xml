@@ -19,7 +19,7 @@
         android:textColor="@android:color/holo_red_dark"
         android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/formats_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,7 +39,7 @@
         android:textColor="@android:color/holo_red_dark"
         android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/codecs_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
