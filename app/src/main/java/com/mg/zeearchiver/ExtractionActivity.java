@@ -6,7 +6,6 @@
 package com.mg.zeearchiver;
 
 
-import java.io.File;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,7 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +26,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import com.mg.zeearchiver.dialogs.ExtractProgressDialog;
 import com.mg.zeearchiver.impls.ExtractCallbackImpl;
 import com.mg.zeearchiver.utils.Utils;
@@ -57,10 +56,13 @@ public class ExtractionActivity extends AppCompatActivity {
 
         Button openArchive = findViewById(R.id.open_btn);
         openArchive.setOnClickListener(v -> {
-            //showFileChooser() ;
-            Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
-            intent.putExtra(FileBrowserActivity.PICK_MODE_KEY, FileBrowserFragment.BROWSE_MODE_FILE);
-            startActivityForResult(intent, START_FILEBROWSER_REQUEST);
+            if (Utils.INSTANCE.isAllFilesAccessGranted()) {
+                Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
+                intent.putExtra(FileBrowserActivity.PICK_MODE_KEY, FileBrowserFragment.BROWSE_MODE_FILE);
+                startActivityForResult(intent, START_FILEBROWSER_REQUEST);
+            } else {
+                Utils.INSTANCE.checkAllFilesAccess(this);
+            }
         });
 
         selectedFileLbl = findViewById(R.id.select_file);
@@ -75,10 +77,14 @@ public class ExtractionActivity extends AppCompatActivity {
 
         extractToBtn = findViewById(R.id.btn_extract_to);
         extractToBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
-            intent.putExtra(FileBrowserActivity.PICK_MODE_KEY,
-                    FileBrowserFragment.BROWSE_MODE_FOLDER);
-            startActivityForResult(intent, START_DIRECTORYBROWSER_REQUEST);
+            if (Utils.INSTANCE.isAllFilesAccessGranted()) {
+                Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
+                intent.putExtra(FileBrowserActivity.PICK_MODE_KEY,
+                        FileBrowserFragment.BROWSE_MODE_FOLDER);
+                startActivityForResult(intent, START_DIRECTORYBROWSER_REQUEST);
+            } else {
+                Utils.INSTANCE.checkAllFilesAccess(this);
+            }
         });
         extract = findViewById(R.id.extract_btn);
 
@@ -88,22 +94,25 @@ public class ExtractionActivity extends AppCompatActivity {
                 builder.setTitle(R.string.warning)
                         .setMessage(R.string.NO_FILE_CHOSEN_MSG)
                         .setPositiveButton(R.string.ok, (dialog, which) -> {
-                            return;
+                            dialog.dismiss();
                         })
                         .setCancelable(false)
                         .show();
                 return;
             }
             if (selectedExtractionPath == null || selectedExtractionPath.length() == 0) {
-
                 Builder builder = new Builder(ExtractionActivity.this);
                 builder.setTitle(R.string.warning)
                         .setMessage(R.string.NO_EXTR_PATH_SELECTED)
                         .setPositiveButton(R.string.extract_to_hint, (dialog, which) -> {
-                            Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
-                            intent.putExtra(FileBrowserActivity.PICK_MODE_KEY,
-                                    FileBrowserFragment.BROWSE_MODE_FOLDER);
-                            startActivityForResult(intent, START_DIRECTORYBROWSER_REQUEST);
+                            if (Utils.INSTANCE.isAllFilesAccessGranted()) {
+                                Intent intent = new Intent(ExtractionActivity.this, FileBrowserActivity.class);
+                                intent.putExtra(FileBrowserActivity.PICK_MODE_KEY,
+                                        FileBrowserFragment.BROWSE_MODE_FOLDER);
+                                startActivityForResult(intent, START_DIRECTORYBROWSER_REQUEST);
+                            } else {
+                                Utils.INSTANCE.checkAllFilesAccess(this);
+                            }
                         })
                         .setNegativeButton(R.string.cancel, null)
                         .setCancelable(false)

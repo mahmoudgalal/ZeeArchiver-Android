@@ -12,9 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,18 +27,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import static android.app.Activity.RESULT_OK;
 import static com.mg.zeearchiver.Archive.Constants.E_ABORT;
 import static com.mg.zeearchiver.Archive.Constants.S_OK;
 import static com.mg.zeearchiver.CompressActivity.START_FOLDER_BROWSE;
 import static com.mg.zeearchiver.CompressActivity.START_SELECT_REQUEST;
 import static com.mg.zeearchiver.utils.Constants.*;
-
 import com.mg.zeearchiver.dialogs.CompressionProgressDialog;
+import com.mg.zeearchiver.utils.Utils;
 import com.mg.zeearchiver.utils.compression.CFormatInfo;
 import com.mg.zeearchiver.utils.compression.CInfo;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,25 +193,24 @@ public class CompressionFragment extends Fragment {
         browseArchive = root.findViewById(R.id.browse_to);
 
 
-        browseArchive.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        browseArchive.setOnClickListener(v -> {
+            if (Utils.INSTANCE.isAllFilesAccessGranted()) {
                 Intent intent = new Intent(getActivity(), FileBrowserActivity.class);
                 intent.putExtra(FileBrowserActivity.PICK_MODE_KEY, FileBrowserFragment.BROWSE_MODE_SELECT);
                 startActivityForResult(intent, START_SELECT_REQUEST);
-
+            } else {
+                Utils.INSTANCE.checkAllFilesAccess(requireContext());
             }
         });
 
         browsePath = root.findViewById(R.id.browse_path);
-        browsePath.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        browsePath.setOnClickListener(v -> {
+            if (Utils.INSTANCE.isAllFilesAccessGranted()) {
                 Intent intent = new Intent(getActivity(), FileBrowserActivity.class);
                 intent.putExtra(FileBrowserActivity.PICK_MODE_KEY, FileBrowserFragment.BROWSE_MODE_FOLDER);
                 startActivityForResult(intent, START_FOLDER_BROWSE);
+            } else {
+                Utils.INSTANCE.checkAllFilesAccess(requireContext());
             }
         });
 

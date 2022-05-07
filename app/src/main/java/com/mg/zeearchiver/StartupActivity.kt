@@ -11,15 +11,16 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils.TruncateAt
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.mg.zeearchiver.utils.Utils
 import java.util.*
 
 class StartupActivity : AppCompatActivity() {
@@ -95,10 +96,12 @@ class StartupActivity : AppCompatActivity() {
                 val intent = Intent(this@StartupActivity, ExtractionActivity::class.java)
                 startActivity(intent)
             }
+            Utils.checkAllFilesAccess(this)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             MY_PERMISSIONS_REQUEST -> {
 
