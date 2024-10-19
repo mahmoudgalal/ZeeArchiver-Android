@@ -28,7 +28,7 @@
     <string name="extract_archive">Extract Archive</string>
     <string name="create_archive">Create Archive</string>
     <string name="tech_info">Tech Info</string>
-    <string name="copyright">Copyright © 2022 Mahmoud Galal</string>
+    <string name="copyright">Copyright © 2024 Mahmoud Galal</string>
     <string name="open_archive"> Open...</string>
     <string name="extract">Extract</string>
     <string name="extract_to_hint">Extract to:</string>
@@ -76,7 +76,7 @@
     <string name="file_not_accessible">File is not accessible</string>
     <string name="about_msg">Zee is an efficient and simple to use Archiver and decompressor.\n
 				it can decompress and compress from\\to all the formats supported by the well known 7zip utility.\n
-				Copyright © 2022\nMahmoud Galal\nfor support contact me:\nmahmoudgalal57@yahoo.com</string>
+				Copyright © 2024\nMahmoud Galal\nfor support contact me:\nmahmoudgalal57@yahoo.com</string>
     <string name="NO_FILE_CHOSEN_MSG">Click open to choose an Archive to Extract.</string>
     <string name="NO_EXTR_PATH_SELECTED">Before Extraction, Please Select a path to Extract the Archive in.</string>
 

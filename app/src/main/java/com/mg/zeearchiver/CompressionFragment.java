@@ -1304,8 +1304,7 @@ public class CompressionFragment extends Fragment {
     {
         CFormatInfo fi = g_Formats[getStaticFormatIndex()];
         info.SolidIsSpecified = fi.Solid;
-        boolean multiThreadEnable = fi.MultiThread;
-        info.MultiThreadIsAllowed = multiThreadEnable;
+        info.MultiThreadIsAllowed = fi.MultiThread;
         info.EncryptHeadersIsAllowed = fi.EncryptFileNames;
         solidBlockSizeSp.setEnabled(fi.Solid);
 

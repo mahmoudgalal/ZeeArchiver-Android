@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils.TruncateAt
 import android.view.Menu
@@ -20,8 +21,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.mg.zeearchiver.utils.Utils
-import java.util.*
+import java.util.Random
 
 class StartupActivity : AppCompatActivity() {
     private lateinit var copyRightLbl: TextView
@@ -31,21 +31,26 @@ class StartupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
         copyRightLbl = findViewById(R.id.pass_lbl)
-        //copyRightLbl.setText("");
         copyRightLbl.ellipsize = TruncateAt.MARQUEE
         copyRightLbl.isSelected = true
-        //copyRightLbl.setText("Copyright � 2014 Mahmoud Galal");
-        //Random r=new Random();	
-        //copyRightLbl.setBackgroundColor(Color.rgb(r.nextInt(200), 22, r.nextInt(255)));
+
         val startDecompress = findViewById<Button>(R.id.decompress)
         startDecompress.setOnClickListener {
-            lastAction = RequestedAction.REQUESTED_ACTION_EXTRACT
-            checkStoragePermissionAndRequest()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                lastAction = RequestedAction.REQUESTED_ACTION_EXTRACT
+                checkStoragePermissionAndRequest()
+            } else {
+                startExtractionActivity()
+            }
         }
         val startCompressor = findViewById<Button>(R.id.create_archive)
         startCompressor.setOnClickListener {
-            lastAction = RequestedAction.REQUESTED_ACTION_COMPRESS
-            checkStoragePermissionAndRequest()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                lastAction = RequestedAction.REQUESTED_ACTION_COMPRESS
+                checkStoragePermissionAndRequest()
+            } else {
+                startCompressionActivity()
+            }
         }
         val techInfo = findViewById<Button>(R.id.tech_info)
         techInfo.setOnClickListener {
@@ -96,7 +101,6 @@ class StartupActivity : AppCompatActivity() {
                 val intent = Intent(this@StartupActivity, ExtractionActivity::class.java)
                 startActivity(intent)
             }
-            Utils.checkAllFilesAccess(this)
         }
     }
 
@@ -104,23 +108,19 @@ class StartupActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             MY_PERMISSIONS_REQUEST -> {
-
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty()
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     if (lastAction == RequestedAction.REQUESTED_ACTION_COMPRESS) {
-                        val intent = Intent(this@StartupActivity, CompressActivity::class.java)
-                        startActivity(intent)
+                        startCompressionActivity()
                     } else {
-                        val intent = Intent(this@StartupActivity, ExtractionActivity::class.java)
-                        startActivity(intent)
+                        startExtractionActivity()
                     }
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return
             }
         }
     }
@@ -148,6 +148,16 @@ class StartupActivity : AppCompatActivity() {
                 .setCancelable(true)
                 .setMessage(R.string.about_msg)
                 .setPositiveButton(R.string.ok, null).show()
+    }
+
+    private fun startCompressionActivity(){
+        val intent = Intent(this@StartupActivity, CompressActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startExtractionActivity(){
+        val intent = Intent(this@StartupActivity, ExtractionActivity::class.java)
+        startActivity(intent)
     }
 
     private fun share() {
