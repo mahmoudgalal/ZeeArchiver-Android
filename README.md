@@ -1,10 +1,10 @@
 # ZeeArchiver
 ![](https://github.com/mahmoudgalal/ZeeArchiver/raw/master/app/src/main/res/drawable-hdpi/zeearchiver.png)      
-Zee is an efficient and simple to use Archiver and decompressor. it can decompress and compress from-to all the formats supported by the well known 7zip utility. <br/>Copyright © 2018 Mahmoud Galal <br/>For support contact me:mahmoudgalal57@yahoo.com
+Zee is an efficient and simple to use Archiver and decompressor. it can decompress and compress from-to all the formats supported by the well known 7zip utility. <br/>Copyright © 2025 Mahmoud Galal <br/>For support contact me:mahmoudgalal57@yahoo.com
 <br/>
 ### How to Build:<br/>
 First ,you have to compile the native part of the project,[P7Zip](http://p7zip.sourceforge.net/),the repo comes with version 9.20.1 source.
-  - Download [Android NDK](https://developer.android.com/ndk/)  ,version <b>r18b</b> recommended 
+  - Download [Android NDK](https://developer.android.com/ndk/)  ,version <b>r23</b> recommended 
   - From the command line,browse to sub-directory <b>"\p7zip_9.20.1\CPP\7zip\Android\jni"</b> and invoke <b>"ndk-build"</b>
   The first native module <b>"lib7z.so"</b> get compiled for the <b>armeabi-v7a</b> ABI (You can add other ABIs if you want in application.mk file).
   - Copy the compiled "lib7z.so" module to the sub-directory <b>("/Prebuilt/armeabi-v7a/")</b> under the repo .(If you targets other ABI then move to the
@@ -17,14 +17,10 @@ First ,you have to compile the native part of the project,[P7Zip](http://p7zip.s
 ### Migrating to p7zip v16.02:<br/>
 <b>P7zip v16.02</b> adds alot of enhancements & fixes to the original port in addition to supporting Rar5 format.<br/> 
 To build the app against the newest P7zip version(stripped-down clone of v16.02 is added to this repo) ,
-simply you have to build it separatly as before using the same instructions as above with some minor changes:
-- Build The Plugins:<br/>
-  1- In your terminal, Browse to "p7zip_16.02/CPP/ANDROID/Format7zFree/jni/" to build 7z.so plugin using the ndk as above.<br/>
-  2- In your terminal, Browse to "p7zip_16.02/CPP/7zip/Compress/Rar/jni/" to build Rar.so codec (for decompressing Rar archives) using the ndk as above.<br/>
-  3- Copy the resulting <b>7z.so & Rar.so</b> to the "/Prebuilt/" directory for the approperiate target architecture as above.<br/>
-  4- Open the ZeeArchiver project in android studio and start building the app.
+simply Open the ZeeArchiver project in android studio and start building the app, the native plugins <b>lib7z.so & libRar.so</b> 
+will be built and copied automatically to "/Prebuilt" sub-directory.
 
-<b>Features:</b><br/>
+### Features:
 
 - Supports the following formats:
   - <i>Unpacking only:</i> AR, ARJ, CAB, CHM, CPIO, CramFS, DMG, EXT, FAT, GPT, HFS, IHEX, ISO, LZH, LZMA, MBR, MSI, NSIS, NTFS, QCOW2,     RAR, RPM, SquashFS, UDF, UEFI, VDI, VHD, VMDK, WIM, XAR and Z.
