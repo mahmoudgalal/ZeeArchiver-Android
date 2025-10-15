@@ -10,6 +10,7 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := 7z
 LOCAL_SHORT_COMMANDS := true
+LOCAL_LDFLAGS += "-Wl,-z,max-page-size=16384"
 LOCAL_CFLAGS := -DANDROID_NDK  -fexceptions \
 	-DNDEBUG -D_REENTRANT -DENV_UNIX \
 	-D_7ZIP_ST \

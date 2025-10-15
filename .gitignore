@@ -131,3 +131,8 @@ local.properties
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 *.iml
+
+# Generated native libraries
+/app/jni/prebuilt/
+/p7zip_16.02/CPP/7zip/Compress/Rar/libs
+/p7zip_16.02/CPP/ANDROID/Format7zFree/libs

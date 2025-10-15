@@ -1,12 +1,19 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
     namespace = "com.mg.zeearchiver"
     defaultConfig {
-        compileSdk = 34
+        compileSdk = 35
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
+        buildToolsVersion "35.0.0"
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+        }
         ndkVersion = "23.0.7123448"
         multiDexEnabled = true
     }
@@ -14,10 +21,25 @@ android {
         buildConfig = true
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs += ['jni/prebuilt']
+        }
+    }
+
     buildTypes {
         named("release") {
             minifyEnabled = false
             proguardFiles(getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt')
+            zipAlignEnabled true
+        }
+        named("debug") {
+            zipAlignEnabled true
         }
     }
     externalNativeBuild {
@@ -33,6 +55,72 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+
+tasks.register('build7zPlugin', Exec) {
+    description 'Builds the 7z native library using ndk-build.'
+    group 'Build'
+    def ndkDir = android.ndkDirectory
+    def jniDir = file('../p7zip_16.02/CPP/ANDROID/Format7zFree/jni')
+    def ndkBuildExecutable = new File(ndkDir, "ndk-build")
+    def abiFilters = android.defaultConfig.ndk.abiFilters
+    def abiString = abiFilters.join(' ')
+    def outputLibsDir = file("${jniDir}/../libs")
+    def prebuiltDir = file('jni/prebuilt')
+    // Set inputs for the build action
+    inputs.dir jniDir
+    // Set outputs for the copy action (the final destination)
+    outputs.dir prebuiltDir
+    // On Windows, use 'ndk-build.cmd'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        ndkBuildExecutable = new File(ndkDir, "ndk-build.cmd")
+    }
+    commandLine ndkBuildExecutable.absolutePath, '-C', jniDir.absolutePath, "APP_ABI=${abiString}"
+
+    doLast {
+        println "Copying lib7z.so file to prebuilt directory..."
+        copy {
+            from(outputLibsDir) {
+                include '**/*.so'
+            }
+            into prebuiltDir
+        }
+    }
+}
+
+tasks.register('buildRarPlugin', Exec) {
+    description 'Builds the Rar native library using ndk-build.'
+    group 'Build'
+    def ndkDir = android.ndkDirectory
+    def jniDir = file('../p7zip_16.02/CPP/7zip/Compress/Rar/jni')
+    def ndkBuildExecutable = new File(ndkDir, "ndk-build")
+    def abiFilters = android.defaultConfig.ndk.abiFilters
+    def abiString = abiFilters.join(' ')
+    def outputLibsDir = file("${jniDir}/../libs")
+    def prebuiltDir = file('jni/prebuilt')
+    // Set inputs for the build action
+    inputs.dir jniDir
+    // Set outputs for the copy action (the final destination)
+    outputs.dir prebuiltDir
+    // On Windows, use 'ndk-build.cmd'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        ndkBuildExecutable = new File(ndkDir, "ndk-build.cmd")
+    }
+    commandLine ndkBuildExecutable.absolutePath, '-C', jniDir.absolutePath, "APP_ABI=${abiString}"
+    doLast {
+        println "Copying libRar.so file to prebuilt directory..."
+        copy {
+            from(outputLibsDir) {
+                include '**/*.so'
+            }
+            into prebuiltDir
+        }
+    }
+}
+
+tasks.named('preBuild') {
+    dependsOn 'build7zPlugin', 'buildRarPlugin'
 }
 
 dependencies {
